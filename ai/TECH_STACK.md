@@ -43,22 +43,22 @@ New technologies should only be introduced when they clearly solve an existing p
 
 # High-Level Stack
 
-| Layer          | Technology                                     |
-| -------------- | ---------------------------------------------- |
-| Frontend       | React 18                                       |
-| Language       | TypeScript 5                                   |
-| Build Tool     | Webpack                                        |
-| Transpiler     | Babel                                          |
-| Backend        | ASP.NET Core (.NET 8)                          |
-| Language       | C#                                             |
-| Database       | MongoDB                                        |
-| Cache          | Redis                                          |
-| Authentication | JWT Bearer + OIDC                              |
-| Testing        | Jest, React Testing Library, xUnit, Playwright |
-| Documentation  | Swagger (OpenAPI)                              |
-| Infrastructure | Docker                                         |
-| CI/CD          | GitHub Actions                                 |
-| Source Control | Git + GitHub                                   |
+| Layer          | Technology                                       |
+| -------------- | ------------------------------------------------ |
+| Frontend       | React 18                                         |
+| Language       | TypeScript 5                                     |
+| Build Tool     | Vite                                             |
+| Transpiler     | SWC                                              |
+| Backend        | ASP.NET Core (.NET 8)                            |
+| Language       | C#                                               |
+| Database       | MongoDB                                          |
+| Cache          | Redis                                            |
+| Authentication | JWT Bearer + OIDC                                |
+| Testing        | Vitest, React Testing Library, Playwright, xUnit |
+| Documentation  | Swagger (OpenAPI)                                |
+| Infrastructure | Docker                                           |
+| CI/CD          | GitHub Actions                                   |
+| Source Control | Git + GitHub                                     |
 
 ---
 
@@ -110,31 +110,405 @@ Guidelines
 
 ---
 
-## Webpack
+## Vite
 
 Purpose
 
-Bundle frontend assets.
+Provide a fast, modern development and build experience for the frontend.
 
 Reasons for selection
 
-- Matches current professional environment.
-- Mature ecosystem.
-- Highly configurable.
+- Excellent performance for local development.
+- Minimal configuration by default.
+- First-class support for modern frontend frameworks.
+- Easy integration with SWC and TailwindCSS.
 
-Future versions may evaluate Vite if justified.
+Guidelines
+
+- Use Vite project structure for the React application.
+- Prefer Vite plugins for build-time integrations.
 
 ---
 
-## Babel
+## SWC
 
 Purpose
 
-Transpile modern JavaScript and TypeScript features.
+Enable fast TypeScript and JavaScript compilation.
 
-Babel should remain a build concern only.
+Reasons for selection
 
-Application code should not depend on Babel-specific features.
+- High build performance.
+- Good compatibility with Vite.
+- Reduces development feedback loop time.
+
+Guidelines
+
+- Use SWC for transpilation and bundling optimizations.
+- Avoid relying on Babel-specific extensions.
+
+---
+
+## React Router
+
+Purpose
+
+Handle client-side navigation and route composition.
+
+Reasons for selection
+
+- Widely adopted and stable.
+- Supports nested routes and route guards.
+- Works well with React lazy loading.
+
+Guidelines
+
+- Organize routes using nested layouts.
+- Keep route components small and focused.
+
+---
+
+## TanStack Query
+
+Purpose
+
+Manage server state and data fetching.
+
+Reasons for selection
+
+- Declarative data fetching.
+- Built-in caching and request deduplication.
+- Strong support for optimistic updates and polling.
+
+Guidelines
+
+- Use TanStack Query for API calls and server-state management.
+- Keep queries and mutations close to domain features.
+
+---
+
+## Axios
+
+Purpose
+
+Perform HTTP requests from the frontend.
+
+Reasons for selection
+
+- Simple API for RESTful communication.
+- Easy request/response interception.
+- Works well with React Query.
+
+Guidelines
+
+- Use a centralized Axios client for API integration.
+- Configure interceptors for auth and error handling.
+
+---
+
+## Jotai
+
+Purpose
+
+Manage lightweight shared state in the UI.
+
+Reasons for selection
+
+- Minimal and composable state management.
+- Works well for local UI state.
+- Complements, not replaces, React Context.
+
+Guidelines
+
+- Use Jotai for state shared across small component trees.
+- Prefer React Context for global application state.
+
+---
+
+## React Context
+
+Used for:
+
+- Authentication
+- Logged-in user
+- Global application configuration
+- Theme
+- Localization
+
+Avoid using Context as a general-purpose state store.
+
+---
+
+## React Hook Form
+
+Purpose
+
+Build performant, declarative form handling.
+
+Reasons for selection
+
+- Excellent performance for complex forms.
+- Minimal re-renders.
+- Strong TypeScript support.
+
+Guidelines
+
+- Use React Hook Form for form state and validation.
+- Integrate Zod for schema validation.
+
+---
+
+## Zod
+
+Purpose
+
+Validate and parse form input and API payloads.
+
+Reasons for selection
+
+- Type-safe schema validation.
+- Ergonomic integration with React Hook Form.
+- Good developer experience.
+
+Guidelines
+
+- Use Zod schemas for form validation and API contract validation.
+- Keep schemas close to the related feature.
+
+---
+
+## TailwindCSS
+
+Purpose
+
+Implement utility-first styling.
+
+Reasons for selection
+
+- Fast UI development.
+- Consistent design system.
+- Good integration with Vite.
+
+Guidelines
+
+- Use Tailwind utility classes for layout and styling.
+- Prefer component-level abstractions for repeated patterns.
+
+---
+
+## shadcn/ui
+
+Purpose
+
+Provide a modern component library and design system.
+
+Reasons for selection
+
+- Ready-to-use accessible UI components.
+- Works well with TailwindCSS.
+- Accelerates UI development.
+
+Guidelines
+
+- Use shadcn/ui for common UI components.
+- Extend components when customization is required.
+
+---
+
+## Lucide
+
+Purpose
+
+Provide iconography for the frontend.
+
+Reasons for selection
+
+- Simple React icon components.
+- Lightweight and extensible.
+
+Guidelines
+
+- Use Lucide icons consistently across the UI.
+- Prefer semantic icons for actions and status.
+
+---
+
+## TanStack Table
+
+Purpose
+
+Build data tables and grids.
+
+Reasons for selection
+
+- Flexible table rendering.
+- Fine-grained control over columns and sorting.
+- Works with React and TypeScript.
+
+Guidelines
+
+- Use TanStack Table for complex tabular interfaces.
+- Keep table logic separate from presentation.
+
+---
+
+## FullCalendar
+
+Purpose
+
+Render calendar views and scheduling interfaces.
+
+Reasons for selection
+
+- Rich calendar UI components.
+- Good support for events and dragging.
+
+Guidelines
+
+- Use FullCalendar for schedule visualization.
+- Keep event data and calendar configuration decoupled.
+
+---
+
+## Recharts
+
+Purpose
+
+Display charts and dashboards.
+
+Reasons for selection
+
+- Declarative chart components.
+- Good TypeScript support.
+
+Guidelines
+
+- Use Recharts for data visualization and metrics.
+- Keep chart configuration and data transformation separated.
+
+---
+
+## Vitest
+
+Purpose
+
+Unit test the frontend.
+
+Reasons for selection
+
+- Fast test execution.
+- Vite-native testing experience.
+
+Guidelines
+
+- Use Vitest for component and utility tests.
+- Keep tests small and focused.
+
+---
+
+## React Testing Library
+
+Purpose
+
+Test React components from the user's perspective.
+
+Reasons for selection
+
+- Encourages accessibility-aware tests.
+- Focuses on behavior over implementation.
+
+Guidelines
+
+- Use RTL for component integration tests.
+- Prefer queries that resemble user interactions.
+
+---
+
+## Playwright
+
+Purpose
+
+End-to-end test user flows.
+
+Reasons for selection
+
+- Reliable browser automation.
+- Cross-browser testing.
+
+Guidelines
+
+- Use Playwright for critical acceptance scenarios.
+- Keep tests stable and maintainable.
+
+---
+
+## ESLint
+
+Purpose
+
+Enforce consistent code quality.
+
+Reasons for selection
+
+- Static analysis for JavaScript and TypeScript.
+- Customizable rules.
+
+Guidelines
+
+- Use ESLint with recommended React and TypeScript rules.
+- Fix lint issues as part of implementation.
+
+---
+
+## Prettier
+
+Purpose
+
+Ensure consistent code formatting.
+
+Reasons for selection
+
+- Enforces style without debate.
+- Works with TypeScript and CSS.
+
+Guidelines
+
+- Use Prettier as the formatter for all frontend files.
+- Integrate with ESLint where possible.
+
+---
+
+## Husky
+
+Purpose
+
+Run git hooks for quality checks.
+
+Reasons for selection
+
+- Prevent problematic commits.
+- Enforce pre-commit workflows.
+
+Guidelines
+
+- Use Husky to run lint-staged and tests before commit.
+
+---
+
+## lint-staged
+
+Purpose
+
+Run checks only on staged files.
+
+Reasons for selection
+
+- Fast pre-commit validation.
+- Reduces noise from full repo checks.
+
+Guidelines
+
+- Use lint-staged with ESLint and Prettier for changed files.
 
 ---
 
