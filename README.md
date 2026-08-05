@@ -1,6 +1,6 @@
 # Project Orkestra
 
-> Modern Workforce & Operations Management Plataform
+> Modern Workforce & Operations Management Platform
 
 ## Status
 
@@ -8,13 +8,13 @@ Under Development
 
 ## Vision
 
-Project Orkestra is a modular plataform designed to simplify workforce, operations and business unit management
+Project Orkestra is a modular platform designed to simplify workforce, operations and business unit management
 
 ## Current Stage
 
 Sprint 0 - Foundation
 
-## Teck Stack
+## Tech Stack
 
 Frontend
 
@@ -40,3 +40,10 @@ Infrastructure
 - Scheduling
 - Payroll
 - Reports
+
+## Goals
+
+- Learn enterprise software architecture
+- Practice full-stack development
+- Build a production-like application
+- Explore CI/CD, testing and DEVOps
