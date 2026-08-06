@@ -7,10 +7,10 @@ namespace ProjectOrkestra.Infrastructure.Repositories;
 
 public class TenantRepository : ITenantRepository
 {
-    private readonly MongoDbContext _context;
+    private readonly IMongoDbContext _context;
 
     public TenantRepository(
-        MongoDbContext context)
+        IMongoDbContext context)
     {
         _context = context;
     }
