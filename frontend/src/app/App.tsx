@@ -1,9 +1,6 @@
-function App() {
-  return (
-    <div>
-      <h1>Project Orkestra</h1>
-    </div>
-  );
-}
+import AppRouter from './router';
+import Home from '@/pages/Home/Home';
 
-export default App;
+export default function App() {
+  return <Home />;
+}
