@@ -5,16 +5,16 @@ import { Separator } from '@/components/ui/separator';
 
 export default function Home() {
   return (
-    <section>
+    <main className="space-y-6 p-8">
       <div>
-        <h1>Project Orkestra</h1>
+        <h1 className="text-2x1 font-bold">Project Orkestra</h1>
 
-        <p>Gestão Inteligente de Operações</p>
+        <p className="text-muted-foreground">Gestão Inteligente de Operações</p>
       </div>
 
       <Separator />
 
-      <div>
+      <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader>
             <CardTitle> Funcionários </CardTitle>
@@ -40,6 +40,6 @@ export default function Home() {
         </Card>
       </div>
       <Button>Começar</Button>
-    </section>
+    </main>
   );
 }

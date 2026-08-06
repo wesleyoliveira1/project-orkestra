@@ -1,6 +1,10 @@
-import AppRouter from './router';
+import AppLayout from '@/components/layout/AppLayout';
 import Home from '@/pages/Home/Home';
 
 export default function App() {
-  return <Home />;
+  return (
+    <AppLayout>
+      <Home />
+    </AppLayout>
+  );
 }
