@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ProjectOrkestra.Api/ProjectOrkestra.Api.csproj" />
+    <Project Path="src/ProjectOrkestra.Application/ProjectOrkestra.Application.csproj" />
+    <Project Path="src/ProjectOrkestra.Domain/ProjectOrkestra.Domain.csproj" />
+    <Project Path="src/ProjectOrkestra.Infrastructure/ProjectOrkestra.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ProjectOrkestra.IntegrationTests/ProjectOrkestra.IntegrationTests.csproj" />
+    <Project Path="tests/ProjectOrkestra.UnitTests/ProjectOrkestra.UnitTests.csproj" />
+  </Folder>
+</Solution>
