@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
 using ProjectOrkestra.Application.Extensions;
 using ProjectOrkestra.Infrastructure.Extensions;
+using ProjectOrkestra.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
