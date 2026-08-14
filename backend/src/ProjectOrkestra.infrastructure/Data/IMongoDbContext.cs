@@ -6,4 +6,6 @@ namespace ProjectOrkestra.Infrastructure.Data;
 public interface IMongoDbContext
 {
     IMongoCollection<Tenant> Tenants { get; }
+    IMongoCollection<Organization> Organizations{ get; }
+
 }
