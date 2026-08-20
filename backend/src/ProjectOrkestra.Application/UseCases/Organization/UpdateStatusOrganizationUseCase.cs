@@ -1,7 +1,7 @@
 ﻿using ProjectOrkestra.Application.DTOs;
 using ProjectOrkestra.Application.Interfaces;
-using ProjectOrkestra.Domain.Entities;
 using ProjectOrkestra.Domain.Exceptions;
+using ProjectOrkestra.Domain.Entities;
 using ProjectOrkestra.Domain.Enums;
 using System;
 using System.Collections.Generic;

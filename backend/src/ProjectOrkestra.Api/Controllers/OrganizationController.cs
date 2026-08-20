@@ -61,7 +61,7 @@ public class OrganizationController : ControllerBase
     }
 
     [HttpPatch("{id:guid}/status")]
-    public async Task<IActionResult> UpdateStatus([FromRoute] Guid id, [FromBody] UpdateStatusDto dto)
+    public async Task<IActionResult> UpdateStatus([FromRoute] Guid id, [FromBody] UpdateOrganizationStatusDto dto)
     {
         await _updateStatusOrganizationUseCase.ExecuteAsync(id, dto.TargetStatus);
 

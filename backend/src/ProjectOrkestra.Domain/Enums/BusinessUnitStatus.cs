@@ -1,6 +1,6 @@
 ﻿namespace ProjectOrkestra.Domain.Enums;
 
-public enum OrganizationStatus {
+public enum BusinessUnitStatus {
     Inactive = 0,
     Active = 1
 }
