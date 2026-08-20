@@ -19,7 +19,7 @@ public class CreateOrganizationUseCase
     public async Task<Guid> ExecuteAsync(
         CreateOrganizationDto dto)
     {
-        var organization = new Domain.Entities.Organization(dto.TenantId, dto.Name, dto.TaxId);
+        var organization = new Domain.Entities.Organization(dto.TenantId, dto.Name, dto.Cnpj);
 
         await _repository.AddAsync(organization);
 
