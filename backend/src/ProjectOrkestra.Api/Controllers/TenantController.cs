@@ -5,7 +5,7 @@ using ProjectOrkestra.Application.UseCases.Tenant;
 namespace ProjectOrkestra.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 public class TenantController : ControllerBase
 {
     private readonly CreateTenantUseCase _createTenantUseCase;

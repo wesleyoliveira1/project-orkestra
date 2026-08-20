@@ -13,13 +13,20 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        MongoSerializationConfig.Configure();
+        
         TenantMap.Configure();
+        OrganizationMap.Configure();
+        BusinessUnitMap.Configure();
 
         services.Configure<MongoDbSettings>(configuration.GetSection("MongoDbSettings"));
 
         services.AddSingleton<IMongoDbContext, MongoDbContext>();
         
         services.AddScoped<ITenantRepository, TenantRepository>();
+        services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+        services.AddScoped<IBusinessUnitRepository, BusinessUnitRepository>();
+
 
         return services;
     }

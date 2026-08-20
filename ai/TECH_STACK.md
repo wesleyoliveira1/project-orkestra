@@ -49,7 +49,7 @@ New technologies should only be introduced when they clearly solve an existing p
 | Language       | TypeScript 5                                     |
 | Build Tool     | Vite                                             |
 | Transpiler     | SWC                                              |
-| Backend        | ASP.NET Core (.NET 8)                            |
+| Backend        | ASP.NET Core (.NET 10)                           |
 | Language       | C#                                               |
 | Database       | MongoDB                                          |
 | Cache          | Redis                                            |
@@ -582,7 +582,7 @@ Follow route-based code organization whenever practical.
 
 # Backend
 
-## ASP.NET Core (.NET 8)
+## ASP.NET Core (.NET 10)
 
 Purpose
 
@@ -604,7 +604,7 @@ The API follows Clean Architecture principles.
 
 Primary backend language.
 
-Use modern language features compatible with .NET 8.
+Use modern language features compatible with .NET 10.
 
 Examples
 
