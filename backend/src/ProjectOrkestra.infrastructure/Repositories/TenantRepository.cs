@@ -28,4 +28,16 @@ public class TenantRepository : ITenantRepository
             .Find(filter)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<IEnumerable<Tenant>> GetAllAsync()
+    {
+        return await _context.Tenants
+            .Find(_ => true)
+            .ToListAsync();
+    }
+
+    public async Task UpdateAsync(Tenant tenant) {
+        var filter = Builders<Tenant>.Filter.Eq(x => x.Id, tenant.Id);
+        await _context.Tenants.ReplaceOneAsync(filter, tenant);
+    }
 }

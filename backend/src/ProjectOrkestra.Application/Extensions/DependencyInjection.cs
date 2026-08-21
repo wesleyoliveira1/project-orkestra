@@ -10,6 +10,10 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<CreateTenantUseCase>();
+        services.AddScoped<GetTenantUseCase>();
+        services.AddScoped<ListTenantsUseCase>();
+        services.AddScoped<RenameTenantUseCase>();
+        services.AddScoped<UpdateStatusTenantUseCase>();
 
         services.AddScoped<CreateOrganizationUseCase>();
         services.AddScoped<GetOrganizationUseCase>();
