@@ -17,6 +17,7 @@ public class EmployeeController : ControllerBase
     private readonly ListEmployeesByBusinessUnitUseCase _listEmployeesByBusinessUnitUseCase;
     private readonly ListEmployeesByOrganizationUseCase _listEmployeesByOrganizationUseCase;
     private readonly RenameEmployeeUseCase _renameEmployeeUseCase;
+    private readonly TransferEmployeeToBusinessUnitUseCase _transferEmployeeToBusinessUnitUseCase;
     private readonly UpdateStatusEmployeeUseCase _updateStatusEmployeeUseCase;
 
     public EmployeeController(
@@ -29,6 +30,7 @@ public class EmployeeController : ControllerBase
         ListEmployeesByBusinessUnitUseCase listEmployeesByBusinessUnitUseCase,
         ListEmployeesByOrganizationUseCase listEmployeesByOrganizationUseCase,
         RenameEmployeeUseCase renameEmployeeUseCase,
+        TransferEmployeeToBusinessUnitUseCase transferEmployeeToBusinessUnitUseCase,
         UpdateStatusEmployeeUseCase updateStatusEmployeeUseCase)
     {
         _createEmployeeUseCase = createEmployeeUseCase;
@@ -40,9 +42,11 @@ public class EmployeeController : ControllerBase
         _listEmployeesByBusinessUnitUseCase = listEmployeesByBusinessUnitUseCase;
         _listEmployeesByOrganizationUseCase = listEmployeesByOrganizationUseCase;
         _renameEmployeeUseCase = renameEmployeeUseCase;
+        _transferEmployeeToBusinessUnitUseCase = transferEmployeeToBusinessUnitUseCase;
         _updateStatusEmployeeUseCase = updateStatusEmployeeUseCase;
     }
 
+    /// <summary>Creates a new employee.</summary>
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateEmployeeDto dto)
     {
@@ -51,6 +55,7 @@ public class EmployeeController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id }, id);
     }
 
+    /// <summary>Gets an employee by its identifier.</summary>
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
@@ -59,6 +64,7 @@ public class EmployeeController : ControllerBase
         return Ok(employee);
     }
 
+    /// <summary>Lists the employees of a business unit.</summary>
     [HttpGet("business-unit")]
     public async Task<IActionResult> ListByBusinessUnit([FromQuery] Guid businessUnitId)
     {
@@ -67,6 +73,7 @@ public class EmployeeController : ControllerBase
         return Ok(employees);
     }
 
+    /// <summary>Lists the employees of an organization.</summary>
     [HttpGet("organization")]
     public async Task<IActionResult> ListByOrganization([FromQuery] Guid organizationId)
     {
@@ -75,6 +82,16 @@ public class EmployeeController : ControllerBase
         return Ok(employees);
     }
 
+    /// <summary>Transfers an employee to another business unit.</summary>
+    [HttpPut("{id:guid}/business-unit")]
+    public async Task<IActionResult> TransferToBusinessUnit([FromRoute] Guid id, [FromQuery] Guid targetBusinessUnitId)
+    {
+        await _transferEmployeeToBusinessUnitUseCase.ExecuteAsync(id, targetBusinessUnitId);
+
+        return NoContent();
+    }
+
+    /// <summary>Changes an employee's name.</summary>
     [HttpPatch("{id:guid}/rename")]
     public async Task<IActionResult> Rename([FromRoute] Guid id, [FromBody] RenameEmployeeDto dto)
     {
@@ -83,6 +100,7 @@ public class EmployeeController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>Changes an employee's address.</summary>
     [HttpPatch("{id:guid}/address")]
     public async Task<IActionResult> ChangeAddress([FromRoute] Guid id, [FromBody] ChangeEmployeeAddressDto dto)
     {
@@ -91,6 +109,7 @@ public class EmployeeController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>Changes an employee's CPF.</summary>
     [HttpPatch("{id:guid}/cpf")]
     public async Task<IActionResult> ChangeCpf([FromRoute] Guid id, [FromBody] ChangeEmployeeCpfDto dto)
     {
@@ -99,6 +118,7 @@ public class EmployeeController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>Changes an employee's email address.</summary>
     [HttpPatch("{id:guid}/email")]
     public async Task<IActionResult> ChangeEmail([FromRoute] Guid id, [FromBody] ChangeEmployeeEmailDto dto)
     {
@@ -107,6 +127,7 @@ public class EmployeeController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>Changes an employee's phone number.</summary>
     [HttpPatch("{id:guid}/phone")]
     public async Task<IActionResult> ChangePhone([FromRoute] Guid id, [FromBody] ChangeEmployeePhoneDto dto)
     {
@@ -115,6 +136,7 @@ public class EmployeeController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>Changes an employee's status.</summary>
     [HttpPatch("{id:guid}/status")]
     public async Task<IActionResult> UpdateStatus([FromRoute] Guid id, [FromBody] UpdateEmployeeStatusDto dto)
     {

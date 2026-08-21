@@ -109,4 +109,12 @@ public class Employee
         UpdatedAt = DateTime.UtcNow;
     }
 
+    public void TransferToBusinessUnit(Guid businessUnitId) {
+        if(businessUnitId == Guid.Empty)
+            throw new ArgumentNullException("Business Unit Id is required.", nameof(businessUnitId));
+
+        BusinessUnitId = businessUnitId;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
 }

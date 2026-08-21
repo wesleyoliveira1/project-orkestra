@@ -25,6 +25,10 @@ public class ExceptionHandlingMiddleware
         {
             await WriteProblemAsync(context, StatusCodes.Status404NotFound, "Not Found", ex.Message);
         }
+        catch (BusinessRuleException ex)
+        {
+            await WriteProblemAsync(context, StatusCodes.Status404NotFound, "Business Rule Violation", ex.Message);
+        }
         catch (ArgumentException ex)
         {
             await WriteProblemAsync(context, StatusCodes.Status400BadRequest, "Invalid Request", ex.Message);

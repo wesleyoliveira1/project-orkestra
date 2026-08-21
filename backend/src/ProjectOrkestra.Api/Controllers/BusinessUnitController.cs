@@ -31,6 +31,7 @@ public class BusinessUnitController : ControllerBase
         _updateStatusBusinessUnitUseCase = updateStatusBusinessUnitUseCase;
     }
 
+    /// <summary>Creates a new business unit.</summary>
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateBusinessUnitDto dto)
     {
@@ -39,6 +40,7 @@ public class BusinessUnitController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id }, id);
     }
 
+    /// <summary>Gets a business unit by its identifier.</summary>
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
@@ -47,6 +49,7 @@ public class BusinessUnitController : ControllerBase
         return Ok(businessUnit);
     }
 
+    /// <summary>Lists the business units of an organization.</summary>
     [HttpGet]
     public async Task<IActionResult> ListByOrganization([FromQuery] Guid organizationId)
     {
@@ -55,6 +58,7 @@ public class BusinessUnitController : ControllerBase
         return Ok(businessUnits);
     }
 
+    /// <summary>Changes a business unit's name.</summary>
     [HttpPatch("{id:guid}/rename")]
     public async Task<IActionResult> Rename([FromRoute] Guid id, [FromBody] RenameBusinessUnitDto dto)
     {
@@ -63,6 +67,7 @@ public class BusinessUnitController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>Changes a business unit's status.</summary>
     [HttpPatch("{id:guid}/status")]
     public async Task<IActionResult> UpdateStatus([FromRoute] Guid id, [FromBody] UpdateBusinessUnitStatusDto dto)
     {
@@ -71,6 +76,7 @@ public class BusinessUnitController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>Changes a business unit's address.</summary>
     [HttpPatch("{id:guid}/address")]
     public async Task<IActionResult> ChangeAddress([FromRoute] Guid id, [FromBody] ChangeBusinessUnitAddressDto dto)
     {
