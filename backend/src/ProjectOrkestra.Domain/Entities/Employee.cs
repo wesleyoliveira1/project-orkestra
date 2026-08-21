@@ -1,5 +1,6 @@
 using System;
 using ProjectOrkestra.Domain.Enums;
+using ProjectOrkestra.Domain.Validators;
 
 namespace ProjectOrkestra.Domain.Entities;
 
@@ -25,19 +26,23 @@ public class Employee
             throw new ArgumentException($"Name is required.", nameof(name));
         if(string.IsNullOrWhiteSpace(cpf))
             throw new ArgumentException($"CPF is required.", nameof(cpf));
+        if(!BrazilianDocumentValidator.IsValidCpf(cpf))
+            throw new ArgumentException("Invalid CPF.", nameof(cpf));
         if(string.IsNullOrWhiteSpace(email))
             throw new ArgumentException($"Email is required.", nameof(email));
         if(string.IsNullOrWhiteSpace(phone))
             throw new ArgumentException($"Phone is required.", nameof(phone));
+        if(!BrazilianDocumentValidator.IsValidBrazilianPhone(phone))
+            throw new ArgumentException("Invalid Brazilian phone number.", nameof(phone));
         if(string.IsNullOrWhiteSpace(address))
             throw new ArgumentException($"Address is required.", nameof(address));
 
         Id = Guid.NewGuid();
         BusinessUnitId = businessUnitId;
         Name = name;
-        Cpf = cpf;
+        Cpf = BrazilianDocumentValidator.FormatCpf(cpf);
         Email = email;
-        Phone = phone;
+        Phone = BrazilianDocumentValidator.FormatBrazilianPhone(phone);
         Address = address;
         Status = EmployeeStatus.Active;
         CreatedAt = DateTime.UtcNow;
@@ -80,8 +85,10 @@ public class Employee
     public void ChangeCpf(string newCpf) {
         if(string.IsNullOrWhiteSpace(newCpf))
             throw new ArgumentNullException("Cpf is required.", nameof(newCpf));
+        if(!BrazilianDocumentValidator.IsValidCpf(newCpf))
+            throw new ArgumentException("Invalid CPF.", nameof(newCpf));
 
-        Cpf = newCpf;
+        Cpf = BrazilianDocumentValidator.FormatCpf(newCpf);
         UpdatedAt = DateTime.UtcNow;
     }
 
@@ -96,8 +103,10 @@ public class Employee
     public void ChangePhone(string newPhone) {
         if(string.IsNullOrWhiteSpace(newPhone))
             throw new ArgumentException("Phone is required.", nameof(newPhone));
+        if(!BrazilianDocumentValidator.IsValidBrazilianPhone(newPhone))
+            throw new ArgumentException("Invalid Brazilian phone number.", nameof(newPhone));
 
-        Phone = newPhone;
+        Phone = BrazilianDocumentValidator.FormatBrazilianPhone(newPhone);
         UpdatedAt = DateTime.UtcNow;
     }
 

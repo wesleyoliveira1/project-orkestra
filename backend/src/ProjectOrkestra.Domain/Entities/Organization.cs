@@ -1,5 +1,6 @@
 ﻿using System;
 using ProjectOrkestra.Domain.Enums;
+using ProjectOrkestra.Domain.Validators;
 
 namespace ProjectOrkestra.Domain.Entities;
 
@@ -20,11 +21,13 @@ public class Organization
             throw new ArgumentException("Name is required.", nameof(name));
         if(string.IsNullOrWhiteSpace(cnpj))
             throw new ArgumentException("Cnpj is required.", nameof(cnpj));
+        if(!BrazilianDocumentValidator.IsValidCnpj(cnpj))
+            throw new ArgumentException("Invalid CNPJ.", nameof(cnpj));
 
         Id = Guid.NewGuid();
         TenantId = tenantId;
         Name = name;
-        Cnpj = cnpj;
+        Cnpj = BrazilianDocumentValidator.FormatCnpj(cnpj);
         Status = OrganizationStatus.Active;
         CreatedAt = DateTime.UtcNow;
     }
