@@ -1,5 +1,6 @@
 ﻿using System;
 using ProjectOrkestra.Domain.Enums;
+using ProjectOrkestra.Domain.Validators;
 
 namespace ProjectOrkestra.Domain.Entities;
 
@@ -12,6 +13,7 @@ public class BusinessUnit
     public string Address { get; private set; } = string.Empty;
     public BusinessUnitStatus Status { get; private set; }
     public DateTime CreatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
     private BusinessUnit() { }
 
     public BusinessUnit(Guid organizationId, string name, string cnpj, string address)
@@ -22,13 +24,15 @@ public class BusinessUnit
             throw new ArgumentException("Name is required.", nameof(name));
         if(string.IsNullOrWhiteSpace(cnpj))
             throw new ArgumentException("Cnpj is required.", nameof(cnpj));
+        if(!BrazilianDocumentValidator.IsValidCnpj(cnpj))
+            throw new ArgumentException("Invalid CNPJ.", nameof(cnpj));
         if(string.IsNullOrWhiteSpace(address))
             throw new ArgumentException("Address is required.", nameof(address));
 
         Id = Guid.NewGuid();
         OrganizationId = organizationId;
         Name = name;
-        Cnpj = cnpj;
+        Cnpj = BrazilianDocumentValidator.FormatCnpj(cnpj);
         Address = address;
         Status = BusinessUnitStatus.Active;
         CreatedAt = DateTime.UtcNow;
@@ -36,10 +40,12 @@ public class BusinessUnit
 
     public void Deactivate() {
         Status = BusinessUnitStatus.Inactive;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void Activate() {
         Status = BusinessUnitStatus.Active;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void ChangeAddress(string newAddress) {
@@ -47,6 +53,7 @@ public class BusinessUnit
             throw new ArgumentNullException("Address is required.", nameof(newAddress));
 
         Address = newAddress;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void Rename(string newName) {
@@ -54,5 +61,6 @@ public class BusinessUnit
             throw new ArgumentException("Name is required.", nameof(newName));
 
         Name = newName;
+        UpdatedAt = DateTime.UtcNow;
     }
 }

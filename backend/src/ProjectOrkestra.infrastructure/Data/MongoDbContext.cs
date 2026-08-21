@@ -20,4 +20,5 @@ public class MongoDbContext : IMongoDbContext
     public IMongoCollection<Tenant> Tenants => _database.GetCollection<Tenant>("tenants");
     public IMongoCollection<Organization> Organizations => _database.GetCollection<Organization>("organizations");
     public IMongoCollection<BusinessUnit> BusinessUnits => _database.GetCollection<BusinessUnit>("businessUnits");
+    public IMongoCollection<Employee> Employees => _database.GetCollection<Employee>("employees");
 }

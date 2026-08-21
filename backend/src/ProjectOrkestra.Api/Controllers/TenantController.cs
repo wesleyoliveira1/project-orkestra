@@ -29,6 +29,7 @@ public class TenantController : ControllerBase
         _updateStatusTenantUseCase = updateStatusTenantUseCase;
     }
 
+    /// <summary>Creates a new tenant.</summary>
     [HttpPost]
     public async Task<IActionResult> Create(
         CreateTenantDto dto)
@@ -41,6 +42,7 @@ public class TenantController : ControllerBase
             id);
     }
 
+    /// <summary>Gets a tenant by its identifier.</summary>
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
@@ -49,6 +51,7 @@ public class TenantController : ControllerBase
         return Ok(tenant);
     }
 
+    /// <summary>Lists all tenants.</summary>
     [HttpGet]
     public async Task<IActionResult> ListTenants()
     {
@@ -57,6 +60,7 @@ public class TenantController : ControllerBase
         return Ok(tenants);
     }
 
+    /// <summary>Changes a tenant's name.</summary>
     [HttpPatch("{id:guid}/rename")]
     public async Task<IActionResult> Rename([FromRoute] Guid id, [FromBody] RenameTenantDto dto)
     {
@@ -65,6 +69,7 @@ public class TenantController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>Changes a tenant's status.</summary>
     [HttpPatch("{id:guid}/status")]
     public async Task<IActionResult> UpdateStatus([FromRoute] Guid id, [FromBody] UpdateTenantStatusDto dto)
     {
@@ -73,6 +78,7 @@ public class TenantController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>Deactivates a tenant.</summary>
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> UpdateStatus([FromRoute] Guid id)
     {

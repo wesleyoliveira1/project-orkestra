@@ -18,6 +18,7 @@ public static class DependencyInjection
         TenantMap.Configure();
         OrganizationMap.Configure();
         BusinessUnitMap.Configure();
+        EmployeeMap.Configure();
 
         services.Configure<MongoDbSettings>(configuration.GetSection("MongoDbSettings"));
 
@@ -26,6 +27,7 @@ public static class DependencyInjection
         services.AddScoped<ITenantRepository, TenantRepository>();
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
         services.AddScoped<IBusinessUnitRepository, BusinessUnitRepository>();
+        services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
 
         return services;

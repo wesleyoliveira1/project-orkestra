@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Options;
+using System.Reflection;
 using ProjectOrkestra.Application.Extensions;
 using ProjectOrkestra.Infrastructure.Extensions;
 using ProjectOrkestra.Api.Middlewares;
@@ -19,6 +20,10 @@ builder.Services.AddSwaggerGen(options =>
         Version = "v1",
         Description = "API for operational team management"
     });
+
+        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+        options.IncludeXmlComments(xmlPath);
 });
 
 var app = builder.Build();

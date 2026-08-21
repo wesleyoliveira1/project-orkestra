@@ -28,6 +28,7 @@ public class OrganizationController : ControllerBase
         _updateStatusOrganizationUseCase = updateStatusOrganizationUseCase;
     }
 
+    /// <summary>Creates a new organization.</summary>
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateOrganizationDto dto)
     {
@@ -36,6 +37,7 @@ public class OrganizationController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id }, id);
     }
 
+    /// <summary>Gets an organization by its identifier.</summary>
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
@@ -44,6 +46,7 @@ public class OrganizationController : ControllerBase
         return Ok(organization);
     }
 
+    /// <summary>Lists the organizations of a tenant.</summary>
     [HttpGet]
     public async Task<IActionResult> ListByTenant([FromQuery] Guid tenantId)
     {
@@ -52,6 +55,7 @@ public class OrganizationController : ControllerBase
         return Ok(organizations);
     }
 
+    /// <summary>Changes an organization's name.</summary>
     [HttpPatch("{id:guid}/rename")]
     public async Task<IActionResult> Rename([FromRoute] Guid id, [FromBody] RenameOrganizationDto dto)
     {
@@ -60,6 +64,7 @@ public class OrganizationController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>Changes an organization's status.</summary>
     [HttpPatch("{id:guid}/status")]
     public async Task<IActionResult> UpdateStatus([FromRoute] Guid id, [FromBody] UpdateOrganizationStatusDto dto)
     {
