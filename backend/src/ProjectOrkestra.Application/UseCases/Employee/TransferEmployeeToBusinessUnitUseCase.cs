@@ -31,12 +31,12 @@ public class TransferEmployeeToBusinessUnitUseCase
         var currentBusinessUnit = await _businessUnitRepository.GetByIdAsync(employee.BusinessUnitId);
 
         if(currentBusinessUnit is null)
-            throw new NotFoundException($"Current BusinessUnit with id {currentBusinessUnit} was not found.");
+            throw new NotFoundException($"Current BusinessUnit with id {employee.BusinessUnitId} was not found.");
 
         var targetBusinessUnit = await _businessUnitRepository.GetByIdAsync(targetBusinessUnitId);
 
         if(targetBusinessUnit is null)
-            throw new NotFoundException($"Target BusinessUnit with id {targetBusinessUnit} was not found.");
+            throw new NotFoundException($"Target BusinessUnit with id {targetBusinessUnitId} was not found.");
 
         if(currentBusinessUnit.OrganizationId != targetBusinessUnit.OrganizationId)
             throw new BusinessRuleException("Employee can only be transfered to a BusinessUnit with the same Organization");
