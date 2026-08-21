@@ -11,6 +11,7 @@ public class Organization
     public string Cnpj { get; private set; } = string.Empty;
     public OrganizationStatus Status { get; private set; }
     public DateTime CreatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
     private Organization() { }
 
     public Organization(Guid tenantId, string name, string cnpj)
@@ -30,10 +31,12 @@ public class Organization
 
     public void Deactivate() {
         Status = OrganizationStatus.Inactive;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void Activate() {
         Status = OrganizationStatus.Active;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void Rename(string newName) {
@@ -41,5 +44,6 @@ public class Organization
             throw new ArgumentException("Name is required.", nameof(newName));
 
         Name = newName;
+        UpdatedAt = DateTime.UtcNow;
     }
 }

@@ -12,6 +12,7 @@ public class BusinessUnit
     public string Address { get; private set; } = string.Empty;
     public BusinessUnitStatus Status { get; private set; }
     public DateTime CreatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
     private BusinessUnit() { }
 
     public BusinessUnit(Guid organizationId, string name, string cnpj, string address)
@@ -36,10 +37,12 @@ public class BusinessUnit
 
     public void Deactivate() {
         Status = BusinessUnitStatus.Inactive;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void Activate() {
         Status = BusinessUnitStatus.Active;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void ChangeAddress(string newAddress) {
@@ -47,6 +50,7 @@ public class BusinessUnit
             throw new ArgumentNullException("Address is required.", nameof(newAddress));
 
         Address = newAddress;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void Rename(string newName) {
@@ -54,5 +58,6 @@ public class BusinessUnit
             throw new ArgumentException("Name is required.", nameof(newName));
 
         Name = newName;
+        UpdatedAt = DateTime.UtcNow;
     }
 }

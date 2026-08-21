@@ -9,6 +9,7 @@ public class Tenant
     public string Cnpj { get; private set; } = string.Empty;
     public TenantStatus Status { get; private set; }
     public DateTime CreatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
     private Tenant()
     {
     }
@@ -30,10 +31,12 @@ public class Tenant
 
     public void Deactivate() {
         Status = TenantStatus.Inactive;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void Activate() {
         Status = TenantStatus.Active;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void Rename(string newName) {
@@ -41,5 +44,6 @@ public class Tenant
             throw new ArgumentException("Name is required.", nameof(newName));
 
         Name = newName;
+        UpdatedAt = DateTime.UtcNow;
     }
 }
