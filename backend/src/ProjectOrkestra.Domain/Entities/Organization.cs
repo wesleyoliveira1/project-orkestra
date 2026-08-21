@@ -8,7 +8,7 @@ public class Organization
     public Guid Id { get; private set; }
     public Guid TenantId { get; private set; }
     public string Name { get; private set; } = string.Empty;
-    public string? Cnpj { get; private set; } = string.Empty;
+    public string Cnpj { get; private set; } = string.Empty;
     public OrganizationStatus Status { get; private set; }
     public DateTime CreatedAt { get; private set; }
     private Organization() { }
@@ -17,6 +17,8 @@ public class Organization
 	{
         if(string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name is required.", nameof(name));
+        if(string.IsNullOrWhiteSpace(cnpj))
+            throw new ArgumentException("Cnpj is required.", nameof(cnpj));
 
         Id = Guid.NewGuid();
         TenantId = tenantId;
