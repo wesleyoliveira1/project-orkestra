@@ -16,7 +16,7 @@ public class CreateTenantUseCase
     public async Task<Guid> ExecuteAsync(
         CreateTenantDto dto)
     {
-        var tenant = new Domain.Entities.Tenant(dto.Name);
+        var tenant = new Domain.Entities.Tenant(dto.Name, dto.Cnpj);
 
         await _repository.AddAsync(tenant);
 

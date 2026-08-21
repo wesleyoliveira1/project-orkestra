@@ -16,7 +16,7 @@ public class CreateBusinessUnitUseCase
 
     public async Task<Guid> ExecuteAsync(CreateBusinessUnitDto dto){
 
-        var businessUnit = new Domain.Entities.BusinessUnit(dto.OrganizationId, dto.Name, dto.Address);
+        var businessUnit = new Domain.Entities.BusinessUnit(dto.OrganizationId, dto.Name, dto.Cnpj, dto.Address);
 
         await _repository.AddAsync(businessUnit);
 
