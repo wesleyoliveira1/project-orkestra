@@ -23,6 +23,8 @@ public class BusinessUnit
             throw new ArgumentException("OrganizationId is required.", nameof(organizationId));
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name is required.", nameof(name));
+        if (name.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException($"Name must have at least two characters.", nameof(name));
         if (string.IsNullOrWhiteSpace(cnpj))
             throw new ArgumentException("Cnpj is required.", nameof(cnpj));
         if (!BrazilianDocumentValidator.IsValidCnpj(cnpj))
@@ -55,6 +57,11 @@ public class BusinessUnit
     {
         if (string.IsNullOrWhiteSpace(newAddress))
             throw new ArgumentNullException("Address is required.", nameof(newAddress));
+        if (newAddress.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException(
+                $"Address must have at least two characters.",
+                nameof(newAddress)
+            );
 
         Address = newAddress;
         UpdatedAt = DateTime.UtcNow;
@@ -64,6 +71,11 @@ public class BusinessUnit
     {
         if (string.IsNullOrWhiteSpace(newName))
             throw new ArgumentException("Name is required.", nameof(newName));
+        if (newName.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException(
+                $"Name must have at least two characters.",
+                nameof(newName)
+            );
 
         Name = newName;
         UpdatedAt = DateTime.UtcNow;

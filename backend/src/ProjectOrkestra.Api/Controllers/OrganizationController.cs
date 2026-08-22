@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectOrkestra.Application.DTOs;
 using ProjectOrkestra.Application.UseCases.Organization;
+using ProjectOrkestra.Domain.Enums;
 
 namespace ProjectOrkestra.Api.Controllers;
 
@@ -49,9 +50,9 @@ public class OrganizationController : ControllerBase
 
     /// <summary>Lists the organizations of a tenant.</summary>
     [HttpGet]
-    public async Task<IActionResult> ListByTenant([FromQuery] Guid tenantId)
+    public async Task<IActionResult> ListByTenant([FromQuery] Guid tenantId, [FromQuery] IEnumerable<OrganizationStatus>? statuses)
     {
-        var organizations = await _listOrganizationsByTenantUseCase.ExecuteAsync(tenantId);
+        var organizations = await _listOrganizationsByTenantUseCase.ExecuteAsync(tenantId, statuses);
 
         return Ok(organizations);
     }

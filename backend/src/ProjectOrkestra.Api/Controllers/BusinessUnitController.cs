@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectOrkestra.Application.DTOs;
 using ProjectOrkestra.Application.UseCases.BusinessUnit;
+using ProjectOrkestra.Domain.Enums;
 
 namespace ProjectOrkestra.Api.Controllers;
 
@@ -52,10 +53,11 @@ public class BusinessUnitController : ControllerBase
 
     /// <summary>Lists the business units of an organization.</summary>
     [HttpGet]
-    public async Task<IActionResult> ListByOrganization([FromQuery] Guid organizationId)
+    public async Task<IActionResult> ListByOrganization([FromQuery] Guid organizationId, [FromQuery] IEnumerable<BusinessUnitStatus>? statuses)
     {
         var businessUnits = await _listBusinessUnitsByOrganizationUseCase.ExecuteAsync(
-            organizationId
+            organizationId,
+            statuses
         );
 
         return Ok(businessUnits);

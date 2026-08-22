@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 using ProjectOrkestra.Application.Interfaces;
 using ProjectOrkestra.Domain.Entities;
+using ProjectOrkestra.Domain.Enums;
 using ProjectOrkestra.Infrastructure.Data;
 
 namespace ProjectOrkestra.Infrastructure.Repositories;
@@ -30,9 +31,12 @@ public class OrganizationRepository : IOrganizationRepository
         return await _context.Organizations.Find(filter).FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<Organization>> GetAllByTenantIdAsync(Guid tenantId)
+    public async Task<IEnumerable<Organization>> GetAllByTenantIdAsync(Guid tenantId, IEnumerable<OrganizationStatus> statuses)
     {
-        var filter = Builders<Organization>.Filter.Eq(x => x.TenantId, tenantId);
+        var filter = Builders<Organization>.Filter.And(
+            Builders<Organization>.Filter.Eq(x => x.TenantId, tenantId),
+            Builders<Organization>.Filter.In(x => x.Status, statuses)
+        );
 
         return await _context.Organizations.Find(filter).ToListAsync();
     }

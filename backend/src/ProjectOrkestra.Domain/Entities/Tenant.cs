@@ -18,6 +18,8 @@ public class Tenant
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name is required.", nameof(name));
+        if (name.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException($"Name must have at least two characters.", nameof(name));
         if (string.IsNullOrWhiteSpace(cnpj))
             throw new ArgumentException("Cnpj is required.", nameof(cnpj));
         if (!BrazilianDocumentValidator.IsValidCnpj(cnpj))
@@ -46,6 +48,11 @@ public class Tenant
     {
         if (string.IsNullOrWhiteSpace(newName))
             throw new ArgumentException("Name is required.", nameof(newName));
+        if (newName.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException(
+                $"Name must have at least two characters.",
+                nameof(newName)
+            );
 
         Name = newName;
         UpdatedAt = DateTime.UtcNow;

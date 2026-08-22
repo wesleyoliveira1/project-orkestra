@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectOrkestra.Application.DTOs;
 using ProjectOrkestra.Application.UseCases.Employee;
+using ProjectOrkestra.Domain.Enums;
 
 namespace ProjectOrkestra.Api.Controllers;
 
@@ -67,18 +68,18 @@ public class EmployeeController : ControllerBase
 
     /// <summary>Lists the employees of a business unit.</summary>
     [HttpGet("business-unit")]
-    public async Task<IActionResult> ListByBusinessUnit([FromQuery] Guid businessUnitId)
+    public async Task<IActionResult> ListByBusinessUnit([FromQuery] Guid businessUnitId, [FromQuery] IEnumerable<EmployeeStatus>? statuses)
     {
-        var employees = await _listEmployeesByBusinessUnitUseCase.ExecuteAsync(businessUnitId);
+        var employees = await _listEmployeesByBusinessUnitUseCase.ExecuteAsync(businessUnitId, statuses);
 
         return Ok(employees);
     }
 
     /// <summary>Lists the employees of an organization.</summary>
     [HttpGet("organization")]
-    public async Task<IActionResult> ListByOrganization([FromQuery] Guid organizationId)
+    public async Task<IActionResult> ListByOrganization([FromQuery] Guid organizationId, [FromQuery] IEnumerable<EmployeeStatus>? statuses)
     {
-        var employees = await _listEmployeesByOrganizationUseCase.ExecuteAsync(organizationId);
+        var employees = await _listEmployeesByOrganizationUseCase.ExecuteAsync(organizationId, statuses);
 
         return Ok(employees);
     }

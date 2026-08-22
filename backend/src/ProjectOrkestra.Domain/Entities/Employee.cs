@@ -32,18 +32,24 @@ public class Employee
             throw new ArgumentException($"BusinessId is required.", nameof(businessUnitId));
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException($"Name is required.", nameof(name));
+        if (name.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException($"Name must have at least two characters.", nameof(name));
         if (string.IsNullOrWhiteSpace(cpf))
             throw new ArgumentException($"CPF is required.", nameof(cpf));
         if (!BrazilianDocumentValidator.IsValidCpf(cpf))
             throw new ArgumentException("Invalid CPF.", nameof(cpf));
         if (string.IsNullOrWhiteSpace(email))
             throw new ArgumentException($"Email is required.", nameof(email));
+        if (!EmailValidator.IsValid(email))
+            throw new ArgumentException("Invalid Email.", nameof(email));
         if (string.IsNullOrWhiteSpace(phone))
             throw new ArgumentException($"Phone is required.", nameof(phone));
         if (!BrazilianDocumentValidator.IsValidBrazilianPhone(phone))
             throw new ArgumentException("Invalid Brazilian phone number.", nameof(phone));
         if (string.IsNullOrWhiteSpace(address))
             throw new ArgumentException($"Address is required.", nameof(address));
+        if (address.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException($"Address must have at least two characters.", nameof(address));
 
         Id = Guid.NewGuid();
         BusinessUnitId = businessUnitId;
@@ -90,6 +96,8 @@ public class Employee
     {
         if (string.IsNullOrWhiteSpace(newName))
             throw new ArgumentException("Name is required.", nameof(newName));
+        if (newName.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException($"Name must have at least two characters.", nameof(newName));
 
         Name = newName;
         UpdatedAt = DateTime.UtcNow;
@@ -110,6 +118,8 @@ public class Employee
     {
         if (string.IsNullOrWhiteSpace(newEmail))
             throw new ArgumentNullException("Email is required.", nameof(newEmail));
+        if (!EmailValidator.IsValid(newEmail))
+            throw new ArgumentException("Invalid Email.", nameof(newEmail));
 
         Email = newEmail;
         UpdatedAt = DateTime.UtcNow;
@@ -130,6 +140,8 @@ public class Employee
     {
         if (string.IsNullOrWhiteSpace(newAddress))
             throw new ArgumentNullException("Address is required.", nameof(newAddress));
+        if (newAddress.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException($"Address must have at least two characters.", nameof(newAddress));
 
         Address = newAddress;
         UpdatedAt = DateTime.UtcNow;

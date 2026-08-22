@@ -5,6 +5,7 @@ using ProjectOrkestra.Application.DTOs;
 using ProjectOrkestra.Application.Interfaces;
 using ProjectOrkestra.Domain.Entities;
 using ProjectOrkestra.Domain.Exceptions;
+using ProjectOrkestra.Domain.Enums;
 
 namespace ProjectOrkestra.Application.UseCases.Organization;
 
@@ -17,8 +18,10 @@ public class ListOrganizationsByTenantUseCase
         _repository = repository;
     }
 
-    public async Task<IEnumerable<Domain.Entities.Organization>> ExecuteAsync(Guid tenantId)
+    public async Task<IEnumerable<Domain.Entities.Organization>> ExecuteAsync(Guid tenantId, IEnumerable<OrganizationStatus>? statuses = null)
     {
-        return await _repository.GetAllByTenantIdAsync(tenantId);
+        var statusFilter = statuses ?? new[] { OrganizationStatus.Active };
+
+        return await _repository.GetAllByTenantIdAsync(tenantId, statusFilter);
     }
 }

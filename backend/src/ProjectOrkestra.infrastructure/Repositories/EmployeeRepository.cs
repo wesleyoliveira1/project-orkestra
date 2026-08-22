@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using ProjectOrkestra.Application.Interfaces;
 using ProjectOrkestra.Domain.Entities;
 using ProjectOrkestra.Infrastructure.Data;
+using ProjectOrkestra.Domain.Enums;
 
 namespace ProjectOrkestra.Infrastructure.Repositories;
 
@@ -27,14 +28,17 @@ public class EmployeeRepository : IEmployeeRepository
         return await _context.Employees.Find(filter).FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<Employee?>> GetAllByBusinessUnitIdAsync(Guid businessUnitId)
+    public async Task<IEnumerable<Employee?>> GetAllByBusinessUnitIdAsync(Guid businessUnitId, IEnumerable<EmployeeStatus> statuses)
     {
-        var filter = Builders<Employee>.Filter.Eq(x => x.BusinessUnitId, businessUnitId);
+        var filter = Builders<Employee>.Filter.And(
+            Builders<Employee>.Filter.Eq(x => x.BusinessUnitId, businessUnitId),
+            Builders<Employee>.Filter.In(x => x.Status, statuses)
+        );
 
         return await _context.Employees.Find(filter).ToListAsync();
     }
 
-    public async Task<IEnumerable<Employee>> GetAllByOrganizationIdAsync(Guid organizationId)
+    public async Task<IEnumerable<Employee>> GetAllByOrganizationIdAsync(Guid organizationId, IEnumerable<EmployeeStatus> statuses)
     {
         var businessUnitFilter = Builders<BusinessUnit>.Filter.Eq(
             x => x.OrganizationId,
@@ -45,7 +49,10 @@ public class EmployeeRepository : IEmployeeRepository
 
         var businessUnitIds = businessUnits.Select(x => x.Id).ToList();
 
-        var employeeFilter = Builders<Employee>.Filter.In(x => x.BusinessUnitId, businessUnitIds);
+        var employeeFilter = Builders<Employee>.Filter.And(
+            Builders<Employee>.Filter.In(x => x.BusinessUnitId, businessUnitIds),
+            Builders<Employee>.Filter.In(x => x.Status, statuses)
+        );
 
         return await _context.Employees.Find(employeeFilter).ToListAsync();
     }
