@@ -34,13 +34,23 @@ public static class BrazilianDocumentValidator
         if (!HasExpectedLength(normalizedValue, 14) || HasRepeatedCharacters(normalizedValue))
             return false;
 
-        if (!normalizedValue[..12].All(char.IsLetterOrDigit) || !normalizedValue[12..].All(char.IsDigit))
+        if (
+            !normalizedValue[..12].All(char.IsLetterOrDigit)
+            || !normalizedValue[12..].All(char.IsDigit)
+        )
             return false;
 
-        var firstCheckDigit = CalculateCnpjCheckDigit(normalizedValue[..12], new[] { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 });
-        var secondCheckDigit = CalculateCnpjCheckDigit(normalizedValue[..13], new[] { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 });
+        var firstCheckDigit = CalculateCnpjCheckDigit(
+            normalizedValue[..12],
+            new[] { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 }
+        );
+        var secondCheckDigit = CalculateCnpjCheckDigit(
+            normalizedValue[..13],
+            new[] { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 }
+        );
 
-        return normalizedValue[12] - '0' == firstCheckDigit && normalizedValue[13] - '0' == secondCheckDigit;
+        return normalizedValue[12] - '0' == firstCheckDigit
+            && normalizedValue[13] - '0' == secondCheckDigit;
     }
 
     public static string FormatCnpj(string value)
@@ -93,7 +103,9 @@ public static class BrazilianDocumentValidator
 
     private static string NormalizeCnpj(string value)
     {
-        return Regex.Replace(value ?? string.Empty, "[^A-Za-z0-9]", string.Empty).ToUpperInvariant();
+        return Regex
+            .Replace(value ?? string.Empty, "[^A-Za-z0-9]", string.Empty)
+            .ToUpperInvariant();
     }
 
     private static string NormalizePhone(string value)

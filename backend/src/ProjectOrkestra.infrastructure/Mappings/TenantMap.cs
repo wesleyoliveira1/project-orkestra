@@ -15,8 +15,7 @@ public static class TenantMap
         {
             map.AutoMap();
 
-            map.MapIdMember(x => x.Id)
-                .SetIdGenerator(CombGuidGenerator.Instance);
+            map.MapIdMember(x => x.Id).SetIdGenerator(CombGuidGenerator.Instance);
         });
     }
 }

@@ -11,18 +11,16 @@ public class Tenant
     public TenantStatus Status { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
-    private Tenant()
-    {
-    }
+
+    private Tenant() { }
 
     public Tenant(string name, string cnpj)
     {
-        
-        if(string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name is required.", nameof(name));
-        if(string.IsNullOrWhiteSpace(cnpj))
+        if (string.IsNullOrWhiteSpace(cnpj))
             throw new ArgumentException("Cnpj is required.", nameof(cnpj));
-        if(!BrazilianDocumentValidator.IsValidCnpj(cnpj))
+        if (!BrazilianDocumentValidator.IsValidCnpj(cnpj))
             throw new ArgumentException("Invalid CNPJ.", nameof(cnpj));
 
         Id = Guid.NewGuid();
@@ -32,18 +30,21 @@ public class Tenant
         CreatedAt = DateTime.UtcNow;
     }
 
-    public void Deactivate() {
+    public void Deactivate()
+    {
         Status = TenantStatus.Inactive;
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void Activate() {
+    public void Activate()
+    {
         Status = TenantStatus.Active;
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void Rename(string newName) {
-        if(string.IsNullOrWhiteSpace(newName))
+    public void Rename(string newName)
+    {
+        if (string.IsNullOrWhiteSpace(newName))
             throw new ArgumentException("Name is required.", nameof(newName));
 
         Name = newName;

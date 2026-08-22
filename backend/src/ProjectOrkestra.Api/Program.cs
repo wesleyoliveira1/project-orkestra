@@ -1,8 +1,8 @@
-using Microsoft.Extensions.Options;
 using System.Reflection;
+using Microsoft.Extensions.Options;
+using ProjectOrkestra.Api.Middlewares;
 using ProjectOrkestra.Application.Extensions;
 using ProjectOrkestra.Infrastructure.Extensions;
-using ProjectOrkestra.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,18 +12,21 @@ builder.Services.AddApplication().AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => 
+builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new()
-    {
-        Title = "Project Orkestra API",
-        Version = "v1",
-        Description = "API for operational team management"
-    });
+    options.SwaggerDoc(
+        "v1",
+        new()
+        {
+            Title = "Project Orkestra API",
+            Version = "v1",
+            Description = "API for operational team management",
+        }
+    );
 
-        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-        options.IncludeXmlComments(xmlPath);
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    options.IncludeXmlComments(xmlPath);
 });
 
 var app = builder.Build();

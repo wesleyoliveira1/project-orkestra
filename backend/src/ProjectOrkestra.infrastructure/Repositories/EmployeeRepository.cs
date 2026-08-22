@@ -1,8 +1,8 @@
+using System;
 using MongoDB.Driver;
 using ProjectOrkestra.Application.Interfaces;
 using ProjectOrkestra.Domain.Entities;
 using ProjectOrkestra.Infrastructure.Data;
-using System;
 
 namespace ProjectOrkestra.Infrastructure.Repositories;
 
@@ -24,39 +24,31 @@ public class EmployeeRepository : IEmployeeRepository
     {
         var filter = Builders<Employee>.Filter.Eq(x => x.Id, id);
 
-        return await _context.Employees
-            .Find(filter)
-            .FirstOrDefaultAsync();
+        return await _context.Employees.Find(filter).FirstOrDefaultAsync();
     }
 
     public async Task<IEnumerable<Employee?>> GetAllByBusinessUnitIdAsync(Guid businessUnitId)
     {
         var filter = Builders<Employee>.Filter.Eq(x => x.BusinessUnitId, businessUnitId);
 
-        return await _context.Employees
-            .Find(filter)
-            .ToListAsync();
+        return await _context.Employees.Find(filter).ToListAsync();
     }
 
     public async Task<IEnumerable<Employee>> GetAllByOrganizationIdAsync(Guid organizationId)
     {
-        var businessUnitFilter = Builders<BusinessUnit>.Filter.Eq(x => x.OrganizationId, organizationId);
+        var businessUnitFilter = Builders<BusinessUnit>.Filter.Eq(
+            x => x.OrganizationId,
+            organizationId
+        );
 
-        var businessUnits = await _context.BusinessUnits
-            .Find(businessUnitFilter)
-            .ToListAsync();
+        var businessUnits = await _context.BusinessUnits.Find(businessUnitFilter).ToListAsync();
 
-        var businessUnitIds = businessUnits
-            .Select(x => x.Id)
-            .ToList();
-        
+        var businessUnitIds = businessUnits.Select(x => x.Id).ToList();
+
         var employeeFilter = Builders<Employee>.Filter.In(x => x.BusinessUnitId, businessUnitIds);
 
-        return await _context.Employees
-            .Find(employeeFilter)
-            .ToListAsync();
+        return await _context.Employees.Find(employeeFilter).ToListAsync();
     }
-
 
     public async Task UpdateAsync(Employee employee)
     {

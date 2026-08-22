@@ -4,16 +4,18 @@ using ProjectOrkestra.Domain.Entities;
 
 namespace ProjectOrkestra.Infrastructure.Mappings;
 
-public static class BusinessUnitMap {
-    public static void Configure() {
-        if(BsonClassMap.IsClassMapRegistered(typeof(BusinessUnit)))
+public static class BusinessUnitMap
+{
+    public static void Configure()
+    {
+        if (BsonClassMap.IsClassMapRegistered(typeof(BusinessUnit)))
             return;
 
-        BsonClassMap.RegisterClassMap<BusinessUnit>(map => {
+        BsonClassMap.RegisterClassMap<BusinessUnit>(map =>
+        {
             map.AutoMap();
 
-            map.MapIdMember(x => x.Id)
-                .SetIdGenerator(CombGuidGenerator.Instance);
+            map.MapIdMember(x => x.Id).SetIdGenerator(CombGuidGenerator.Instance);
         });
     }
 }

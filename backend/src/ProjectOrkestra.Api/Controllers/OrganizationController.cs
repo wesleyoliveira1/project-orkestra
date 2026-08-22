@@ -19,7 +19,8 @@ public class OrganizationController : ControllerBase
         GetOrganizationUseCase getOrganizationUseCase,
         ListOrganizationsByTenantUseCase listOrganizationsByTenantUseCase,
         RenameOrganizationUseCase renameOrganizationUseCase,
-        UpdateStatusOrganizationUseCase updateStatusOrganizationUseCase)
+        UpdateStatusOrganizationUseCase updateStatusOrganizationUseCase
+    )
     {
         _createOrganizationUseCase = createOrganizationUseCase;
         _getOrganizationUseCase = getOrganizationUseCase;
@@ -57,7 +58,10 @@ public class OrganizationController : ControllerBase
 
     /// <summary>Changes an organization's name.</summary>
     [HttpPatch("{id:guid}/rename")]
-    public async Task<IActionResult> Rename([FromRoute] Guid id, [FromBody] RenameOrganizationDto dto)
+    public async Task<IActionResult> Rename(
+        [FromRoute] Guid id,
+        [FromBody] RenameOrganizationDto dto
+    )
     {
         await _renameOrganizationUseCase.ExecuteAsync(id, dto.NewName);
 
@@ -66,7 +70,10 @@ public class OrganizationController : ControllerBase
 
     /// <summary>Changes an organization's status.</summary>
     [HttpPatch("{id:guid}/status")]
-    public async Task<IActionResult> UpdateStatus([FromRoute] Guid id, [FromBody] UpdateOrganizationStatusDto dto)
+    public async Task<IActionResult> UpdateStatus(
+        [FromRoute] Guid id,
+        [FromBody] UpdateOrganizationStatusDto dto
+    )
     {
         await _updateStatusOrganizationUseCase.ExecuteAsync(id, dto.TargetStatus);
 
