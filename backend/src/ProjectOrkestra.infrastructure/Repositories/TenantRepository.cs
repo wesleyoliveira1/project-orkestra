@@ -9,8 +9,7 @@ public class TenantRepository : ITenantRepository
 {
     private readonly IMongoDbContext _context;
 
-    public TenantRepository(
-        IMongoDbContext context)
+    public TenantRepository(IMongoDbContext context)
     {
         _context = context;
     }
@@ -24,19 +23,16 @@ public class TenantRepository : ITenantRepository
     {
         var filter = Builders<Tenant>.Filter.Eq(x => x.Id, id);
 
-        return await _context.Tenants
-            .Find(filter)
-            .FirstOrDefaultAsync();
+        return await _context.Tenants.Find(filter).FirstOrDefaultAsync();
     }
 
     public async Task<IEnumerable<Tenant>> GetAllAsync()
     {
-        return await _context.Tenants
-            .Find(_ => true)
-            .ToListAsync();
+        return await _context.Tenants.Find(_ => true).ToListAsync();
     }
 
-    public async Task UpdateAsync(Tenant tenant) {
+    public async Task UpdateAsync(Tenant tenant)
+    {
         var filter = Builders<Tenant>.Filter.Eq(x => x.Id, tenant.Id);
         await _context.Tenants.ReplaceOneAsync(filter, tenant);
     }

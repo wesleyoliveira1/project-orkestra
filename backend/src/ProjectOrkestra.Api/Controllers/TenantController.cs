@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using ProjectOrkestra.Domain.Enums;
 using ProjectOrkestra.Application.DTOs;
 using ProjectOrkestra.Application.UseCases.Tenant;
+using ProjectOrkestra.Domain.Enums;
 
 namespace ProjectOrkestra.Api.Controllers;
 
@@ -20,7 +20,8 @@ public class TenantController : ControllerBase
         GetTenantUseCase getTenantUseCase,
         ListTenantsUseCase listTenantsUseCase,
         RenameTenantUseCase renameTenantUseCase,
-        UpdateStatusTenantUseCase updateStatusTenantUseCase)
+        UpdateStatusTenantUseCase updateStatusTenantUseCase
+    )
     {
         _createTenantUseCase = createTenantUseCase;
         _getTenantUseCase = getTenantUseCase;
@@ -31,15 +32,11 @@ public class TenantController : ControllerBase
 
     /// <summary>Creates a new tenant.</summary>
     [HttpPost]
-    public async Task<IActionResult> Create(
-        CreateTenantDto dto)
+    public async Task<IActionResult> Create(CreateTenantDto dto)
     {
         var id = await _createTenantUseCase.ExecuteAsync(dto);
 
-        return CreatedAtAction(
-            nameof(Create),
-            new { id },
-            id);
+        return CreatedAtAction(nameof(Create), new { id }, id);
     }
 
     /// <summary>Gets a tenant by its identifier.</summary>
@@ -71,7 +68,10 @@ public class TenantController : ControllerBase
 
     /// <summary>Changes a tenant's status.</summary>
     [HttpPatch("{id:guid}/status")]
-    public async Task<IActionResult> UpdateStatus([FromRoute] Guid id, [FromBody] UpdateTenantStatusDto dto)
+    public async Task<IActionResult> UpdateStatus(
+        [FromRoute] Guid id,
+        [FromBody] UpdateTenantStatusDto dto
+    )
     {
         await _updateStatusTenantUseCase.ExecuteAsync(id, dto.TargetStatus);
 

@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
-using ProjectOrkestra.Application.UseCases.Tenant;
-using ProjectOrkestra.Application.UseCases.Organization;
 using ProjectOrkestra.Application.UseCases.BusinessUnit;
 using ProjectOrkestra.Application.UseCases.Employee;
+using ProjectOrkestra.Application.UseCases.Organization;
+using ProjectOrkestra.Application.UseCases.Tenant;
 
 namespace ProjectOrkestra.Application.Extensions;
 
@@ -21,7 +21,7 @@ public static class DependencyInjection
         services.AddScoped<ListOrganizationsByTenantUseCase>();
         services.AddScoped<RenameOrganizationUseCase>();
         services.AddScoped<UpdateStatusOrganizationUseCase>();
-        
+
         services.AddScoped<CreateBusinessUnitUseCase>();
         services.AddScoped<GetBusinessUnitUseCase>();
         services.AddScoped<ListBusinessUnitsByOrganizationUseCase>();
