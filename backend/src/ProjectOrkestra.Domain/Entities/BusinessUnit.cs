@@ -1,12 +1,10 @@
-﻿using System;
-using ProjectOrkestra.Domain.Enums;
+﻿using ProjectOrkestra.Domain.Enums;
 using ProjectOrkestra.Domain.Validators;
 
 namespace ProjectOrkestra.Domain.Entities;
 
-public class BusinessUnit
-{
-	public Guid Id { get; private set; }
+public class BusinessUnit {
+    public Guid Id { get; private set; }
     public Guid OrganizationId { get; private set; }
     public string Name { get; private set; } = string.Empty;
     public string Cnpj { get; private set; } = string.Empty;
@@ -16,18 +14,21 @@ public class BusinessUnit
     public DateTime? UpdatedAt { get; private set; }
     private BusinessUnit() { }
 
-    public BusinessUnit(Guid organizationId, string name, string cnpj, string address)
-	{
+    public BusinessUnit(Guid organizationId, string name, string cnpj, string address) {
         if(organizationId == Guid.Empty)
             throw new ArgumentException("OrganizationId is required.", nameof(organizationId));
         if(string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name is required.", nameof(name));
+        if(name.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException("Name must have at least two characters.", nameof(name));
         if(string.IsNullOrWhiteSpace(cnpj))
             throw new ArgumentException("Cnpj is required.", nameof(cnpj));
         if(!BrazilianDocumentValidator.IsValidCnpj(cnpj))
             throw new ArgumentException("Invalid CNPJ.", nameof(cnpj));
         if(string.IsNullOrWhiteSpace(address))
             throw new ArgumentException("Address is required.", nameof(address));
+        if(address.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException("Address must have at least two characters.", nameof(address));
 
         Id = Guid.NewGuid();
         OrganizationId = organizationId;
@@ -50,7 +51,9 @@ public class BusinessUnit
 
     public void ChangeAddress(string newAddress) {
         if(string.IsNullOrWhiteSpace(newAddress))
-            throw new ArgumentNullException("Address is required.", nameof(newAddress));
+            throw new ArgumentException("Address is required.", nameof(newAddress));
+        if(newAddress.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException("Address must have at least two characters.", nameof(newAddress));
 
         Address = newAddress;
         UpdatedAt = DateTime.UtcNow;
@@ -59,6 +62,8 @@ public class BusinessUnit
     public void Rename(string newName) {
         if(string.IsNullOrWhiteSpace(newName))
             throw new ArgumentException("Name is required.", nameof(newName));
+        if(newName.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException("Name must have at least two characters.", nameof(newName));
 
         Name = newName;
         UpdatedAt = DateTime.UtcNow;

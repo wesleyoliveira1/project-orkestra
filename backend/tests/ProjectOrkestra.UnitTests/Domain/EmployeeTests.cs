@@ -1,6 +1,5 @@
 ﻿using ProjectOrkestra.Domain.Entities;
 using ProjectOrkestra.Domain.Enums;
-using System;
 
 namespace ProjectOrkestra.UnitTests.Domain;
 
@@ -16,7 +15,7 @@ public class EmployeeTests {
 
     [Fact]
     public void Constructor_WithValidData_CreatesEmployeeAsActive() {
-        var employee = CreateValidEmployee();
+        Employee employee = CreateValidEmployee();
 
         Assert.Equal(EmployeeStatus.Active, employee.Status);
         Assert.NotEqual(Guid.Empty, employee.Id);
@@ -54,7 +53,7 @@ public class EmployeeTests {
 
     [Fact]
     public void Deactivate_SetsStatusToInactiveAndUpdatesTimestamp() {
-        var employee = CreateValidEmployee();
+        Employee employee = CreateValidEmployee();
 
         employee.Deactivate();
 
@@ -64,8 +63,8 @@ public class EmployeeTests {
 
     [Fact]
     public void TransferToBusinessUnit_ChangesBusinessUnitId() {
-        var employee = CreateValidEmployee();
-        var newBusinessUnitId = Guid.NewGuid();
+        Employee employee = CreateValidEmployee();
+        Guid newBusinessUnitId = Guid.NewGuid();
 
         employee.TransferToBusinessUnit(newBusinessUnitId);
 

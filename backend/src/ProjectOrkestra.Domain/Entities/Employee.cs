@@ -1,11 +1,9 @@
-using System;
 using ProjectOrkestra.Domain.Enums;
 using ProjectOrkestra.Domain.Validators;
 
 namespace ProjectOrkestra.Domain.Entities;
 
-public class Employee
-{
+public class Employee {
     public Guid Id { get; private set; }
     public Guid BusinessUnitId { get; private set; }
     public string Name { get; private set; } = string.Empty;
@@ -13,17 +11,18 @@ public class Employee
     public string Email { get; private set; } = string.Empty;
     public string Phone { get; private set; } = string.Empty;
     public string Address { get; private set; } = string.Empty;
-    public EmployeeStatus Status  { get; private set; }
+    public EmployeeStatus Status { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
-    private Employee() {}
+    private Employee() { }
 
-    public Employee(Guid businessUnitId, string name, string cpf, string email, string phone, string address)
-    {
+    public Employee(Guid businessUnitId, string name, string cpf, string email, string phone, string address) {
         if(businessUnitId == Guid.Empty)
             throw new ArgumentException($"BusinessId is required.", nameof(businessUnitId));
         if(string.IsNullOrWhiteSpace(name))
             throw new ArgumentException($"Name is required.", nameof(name));
+        if(name.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException("Name must have at least two characters.", nameof(name));
         if(string.IsNullOrWhiteSpace(cpf))
             throw new ArgumentException($"CPF is required.", nameof(cpf));
         if(!BrazilianDocumentValidator.IsValidCpf(cpf))
@@ -36,6 +35,8 @@ public class Employee
             throw new ArgumentException("Invalid Brazilian phone number.", nameof(phone));
         if(string.IsNullOrWhiteSpace(address))
             throw new ArgumentException($"Address is required.", nameof(address));
+        if(address.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException("Address must have at least two characters.", nameof(address));
 
         Id = Guid.NewGuid();
         BusinessUnitId = businessUnitId;
@@ -49,27 +50,27 @@ public class Employee
 
     }
 
-    public void Deactivate(){
+    public void Deactivate() {
         Status = EmployeeStatus.Inactive;
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void Activate(){
+    public void Activate() {
         Status = EmployeeStatus.Active;
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void Vacation(){
+    public void Vacation() {
         Status = EmployeeStatus.Vacation;
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void Freeday(){
+    public void Freeday() {
         Status = EmployeeStatus.FreeDay;
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void License(){
+    public void License() {
         Status = EmployeeStatus.License;
         UpdatedAt = DateTime.UtcNow;
     }
@@ -77,6 +78,8 @@ public class Employee
     public void Rename(string newName) {
         if(string.IsNullOrWhiteSpace(newName))
             throw new ArgumentException("Name is required.", nameof(newName));
+        if(newName.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException("Name must have at least two characters.", nameof(newName));
 
         Name = newName;
         UpdatedAt = DateTime.UtcNow;
@@ -113,6 +116,8 @@ public class Employee
     public void ChangeAddress(string newAddress) {
         if(string.IsNullOrWhiteSpace(newAddress))
             throw new ArgumentNullException("Address is required.", nameof(newAddress));
+        if(newAddress.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException("Address must have at least two characters.", nameof(newAddress));
 
         Address = newAddress;
         UpdatedAt = DateTime.UtcNow;

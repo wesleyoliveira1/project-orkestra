@@ -18,4 +18,9 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\ProjectOrkestra.Domain\ProjectOrkestra.Domain.csproj" />
+    <ProjectReference Include="..\..\src\ProjectOrkestra.Application\ProjectOrkestra.Application.csproj" />
+  </ItemGroup>
+
 </Project>
