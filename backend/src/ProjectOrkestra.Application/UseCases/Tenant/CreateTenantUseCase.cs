@@ -7,14 +7,12 @@ public class CreateTenantUseCase
 {
     private readonly ITenantRepository _repository;
 
-    public CreateTenantUseCase(
-        ITenantRepository repository)
+    public CreateTenantUseCase(ITenantRepository repository)
     {
         _repository = repository;
     }
 
-    public async Task<Guid> ExecuteAsync(
-        CreateTenantDto dto)
+    public async Task<Guid> ExecuteAsync(CreateTenantDto dto)
     {
         var tenant = new Domain.Entities.Tenant(dto.Name, dto.Cnpj);
 

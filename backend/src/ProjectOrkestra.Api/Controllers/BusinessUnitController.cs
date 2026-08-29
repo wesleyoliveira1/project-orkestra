@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectOrkestra.Application.DTOs;
 using ProjectOrkestra.Application.UseCases.BusinessUnit;
+using ProjectOrkestra.Domain.Enums;
 
 namespace ProjectOrkestra.Api.Controllers;
 
@@ -21,7 +22,8 @@ public class BusinessUnitController : ControllerBase
         GetBusinessUnitUseCase getBusinessUnitUseCase,
         ListBusinessUnitsByOrganizationUseCase listBusinessUnitsByOrganizationUseCase,
         RenameBusinessUnitUseCase renameBusinessUnitUseCase,
-        UpdateStatusBusinessUnitUseCase updateStatusBusinessUnitUseCase)
+        UpdateStatusBusinessUnitUseCase updateStatusBusinessUnitUseCase
+    )
     {
         _createBusinessUnitUseCase = createBusinessUnitUseCase;
         _changeBusinessUnitAddressUseCase = changeBusinessUnitAddressUseCase;
@@ -51,16 +53,22 @@ public class BusinessUnitController : ControllerBase
 
     /// <summary>Lists the business units of an organization.</summary>
     [HttpGet]
-    public async Task<IActionResult> ListByOrganization([FromQuery] Guid organizationId)
+    public async Task<IActionResult> ListByOrganization([FromQuery] Guid organizationId, [FromQuery] IEnumerable<BusinessUnitStatus>? statuses)
     {
-        var businessUnits = await _listBusinessUnitsByOrganizationUseCase.ExecuteAsync(organizationId);
+        var businessUnits = await _listBusinessUnitsByOrganizationUseCase.ExecuteAsync(
+            organizationId,
+            statuses
+        );
 
         return Ok(businessUnits);
     }
 
     /// <summary>Changes a business unit's name.</summary>
     [HttpPatch("{id:guid}/rename")]
-    public async Task<IActionResult> Rename([FromRoute] Guid id, [FromBody] RenameBusinessUnitDto dto)
+    public async Task<IActionResult> Rename(
+        [FromRoute] Guid id,
+        [FromBody] RenameBusinessUnitDto dto
+    )
     {
         await _renameBusinessUnitUseCase.ExecuteAsync(id, dto.NewName);
 
@@ -69,7 +77,10 @@ public class BusinessUnitController : ControllerBase
 
     /// <summary>Changes a business unit's status.</summary>
     [HttpPatch("{id:guid}/status")]
-    public async Task<IActionResult> UpdateStatus([FromRoute] Guid id, [FromBody] UpdateBusinessUnitStatusDto dto)
+    public async Task<IActionResult> UpdateStatus(
+        [FromRoute] Guid id,
+        [FromBody] UpdateBusinessUnitStatusDto dto
+    )
     {
         await _updateStatusBusinessUnitUseCase.ExecuteAsync(id, dto.TargetStatus);
 
@@ -78,7 +89,10 @@ public class BusinessUnitController : ControllerBase
 
     /// <summary>Changes a business unit's address.</summary>
     [HttpPatch("{id:guid}/address")]
-    public async Task<IActionResult> ChangeAddress([FromRoute] Guid id, [FromBody] ChangeBusinessUnitAddressDto dto)
+    public async Task<IActionResult> ChangeAddress(
+        [FromRoute] Guid id,
+        [FromBody] ChangeBusinessUnitAddressDto dto
+    )
     {
         await _changeBusinessUnitAddressUseCase.ExecuteAsync(id, dto.NewAddress);
 

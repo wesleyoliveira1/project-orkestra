@@ -13,15 +13,18 @@ public class Organization
     public OrganizationStatus Status { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
+
     private Organization() { }
 
     public Organization(Guid tenantId, string name, string cnpj)
-	{
-        if(string.IsNullOrWhiteSpace(name))
+    {
+        if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name is required.", nameof(name));
-        if(string.IsNullOrWhiteSpace(cnpj))
+        if (name.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException($"Name must have at least two characters.", nameof(name));
+        if (string.IsNullOrWhiteSpace(cnpj))
             throw new ArgumentException("Cnpj is required.", nameof(cnpj));
-        if(!BrazilianDocumentValidator.IsValidCnpj(cnpj))
+        if (!BrazilianDocumentValidator.IsValidCnpj(cnpj))
             throw new ArgumentException("Invalid CNPJ.", nameof(cnpj));
 
         Id = Guid.NewGuid();
@@ -32,19 +35,27 @@ public class Organization
         CreatedAt = DateTime.UtcNow;
     }
 
-    public void Deactivate() {
+    public void Deactivate()
+    {
         Status = OrganizationStatus.Inactive;
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void Activate() {
+    public void Activate()
+    {
         Status = OrganizationStatus.Active;
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void Rename(string newName) {
-        if(string.IsNullOrWhiteSpace(newName))
+    public void Rename(string newName)
+    {
+        if (string.IsNullOrWhiteSpace(newName))
             throw new ArgumentException("Name is required.", nameof(newName));
+        if (newName.Count(c => !char.IsWhiteSpace(c)) < 2)
+            throw new ArgumentException(
+                $"Name must have at least two characters.",
+                nameof(newName)
+            );
 
         Name = newName;
         UpdatedAt = DateTime.UtcNow;

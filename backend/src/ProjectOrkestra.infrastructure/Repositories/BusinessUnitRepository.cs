@@ -1,21 +1,22 @@
-﻿using MongoDB.Driver;
+﻿using System;
+using MongoDB.Driver;
 using ProjectOrkestra.Application.Interfaces;
 using ProjectOrkestra.Domain.Entities;
+using ProjectOrkestra.Domain.Enums;
 using ProjectOrkestra.Infrastructure.Data;
-using System;
 
 namespace ProjectOrkestra.Infrastructure.Repositories;
 
-public class BusinessUnitRepository : IBusinessUnitRepository 
+public class BusinessUnitRepository : IBusinessUnitRepository
 {
     private readonly IMongoDbContext _context;
 
-    public BusinessUnitRepository(
-        IMongoDbContext context) {
+    public BusinessUnitRepository(IMongoDbContext context)
+    {
         _context = context;
     }
 
-    public async Task AddAsync(BusinessUnit businessUnit) 
+    public async Task AddAsync(BusinessUnit businessUnit)
     {
         await _context.BusinessUnits.InsertOneAsync(businessUnit);
     }
@@ -24,18 +25,17 @@ public class BusinessUnitRepository : IBusinessUnitRepository
     {
         var filter = Builders<BusinessUnit>.Filter.Eq(x => x.Id, id);
 
-        return await _context.BusinessUnits
-            .Find(filter)
-            .FirstOrDefaultAsync();
+        return await _context.BusinessUnits.Find(filter).FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<BusinessUnit?>> GetAllByOrganizationIdAsync(Guid organizationId) 
+    public async Task<IEnumerable<BusinessUnit?>> GetAllByOrganizationIdAsync(Guid organizationId, IEnumerable<BusinessUnitStatus> statuses)
     {
-        var filter = Builders<BusinessUnit>.Filter.Eq(x => x.OrganizationId, organizationId);
+        var filter = Builders<BusinessUnit>.Filter.And(
+            Builders<BusinessUnit>.Filter.Eq(x => x.OrganizationId, organizationId),
+            Builders<BusinessUnit>.Filter.In(x => x.Status, statuses)
+        );
 
-        return await _context.BusinessUnits
-            .Find(filter)
-            .ToListAsync();
+        return await _context.BusinessUnits.Find(filter).ToListAsync();
     }
 
     public async Task UpdateAsync(BusinessUnit businessUnit)

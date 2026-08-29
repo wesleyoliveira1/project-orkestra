@@ -5,5 +5,5 @@ namespace ProjectOrkestra.Application.DTOs;
 
 public class ChangeEmployeePhoneDto
 {
-    public string NewPhone { get; set; }
+    public string NewPhone { get; set; } = string.Empty;
 }

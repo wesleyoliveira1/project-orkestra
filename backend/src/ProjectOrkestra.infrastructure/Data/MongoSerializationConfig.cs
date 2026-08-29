@@ -1,13 +1,26 @@
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
-using MongoDB.Bson;
 
 namespace ProjectOrkestra.Infrastructure.Data;
 
 public static class MongoSerializationConfig
 {
+    private static bool _configured = false;
+    private static readonly object _lock = new object();
+
     public static void Configure()
     {
-        BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+        if (_configured)
+            return;
+
+        lock (_lock)
+        {
+            if (_configured)
+                return;
+
+            BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+            _configured = true;
+        }
     }
 }
