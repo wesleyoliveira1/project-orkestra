@@ -535,14 +535,14 @@ Project Orkestra uses centralized exception handling via middleware.
 
 Exception-to-HTTP-Status Mapping:
 
-| Exception Type | HTTP Status | Reason |
-|---|---|---|
-| `NotFoundException` | 404 | Resource not found (e.g., Employee ID doesn't exist) |
-| `BusinessRuleException` | 400 | Business rule violated (e.g., cannot deactivate organization with active employees) |
-| `ArgumentException` | 400 | Invalid argument (e.g., invalid CNPJ format) |
-| `ArgumentNullException` | 400 | Null argument (e.g., empty organization name) |
-| `UnauthorizedAccessException` | 403 | User lacks permission (authorization failure) |
-| `Unhandled Exception` | 500 | Unexpected server error |
+| Exception Type                | HTTP Status | Reason                                                                              |
+| ----------------------------- | ----------- | ----------------------------------------------------------------------------------- |
+| `NotFoundException`           | 404         | Resource not found (e.g., Employee ID doesn't exist)                                |
+| `BusinessRuleException`       | 400         | Business rule violated (e.g., cannot deactivate organization with active employees) |
+| `ArgumentException`           | 400         | Invalid argument (e.g., invalid CNPJ format)                                        |
+| `ArgumentNullException`       | 400         | Null argument (e.g., empty organization name)                                       |
+| `UnauthorizedAccessException` | 403         | User lacks permission (authorization failure)                                       |
+| `Unhandled Exception`         | 500         | Unexpected server error                                                             |
 
 Response Format:
 

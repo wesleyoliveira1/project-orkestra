@@ -15,6 +15,7 @@ Project Orkestra is a modular, multi-tenant platform designed to simplify workfo
 **Epic 3: Core Domain** - Complete ✅
 
 Foundation includes:
+
 - Tenant, Organization, BusinessUnit, Employee domain entities
 - Application-layer use cases with comprehensive business logic
 - Repository integration with MongoDB
@@ -130,6 +131,7 @@ dotnet test
 Current status: **31 Integration Tests + 51 Unit Tests = 82 Tests - All Passing ✅**
 
 Tests cover:
+
 - Organization creation, listing, renaming, status transitions
 - Business Unit operations and filtering
 - Employee management and status transitions
