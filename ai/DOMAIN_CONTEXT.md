@@ -1,10 +1,10 @@
 ---
 title: Domain Context
-version: 1.0.0
+version: 2.0.0
 status: Approved
 owner: Project Orkestra
 author: Wesley Oliveira
-last_updated: 2026-08-05
+last_updated: 2026-08-29
 
 related:
   - PROJECT_CONTEXT.md
@@ -70,27 +70,36 @@ Responsibilities:
 - Subscription
 - Global configuration
 
+Attributes:
+
+- **CNPJ**: Unique Brazilian business registration for the Tenant (root legal entity)
+
 ---
 
 # Organization
 
 An Organization represents a company operating inside a Tenant.
 
+Each Organization has its own CNPJ.
+
+Organizations within the same Tenant may represent different legal entities within the same group or business structure.
+
 Responsibilities:
 
 - Business information
-- Employees
-- Business Units
+- Business Units management
+- Organizational structure
 - Roles
 - Operational settings
 
 Relationships:
 
-Tenant
+Tenant (1) → (N) Organization
 
-↓
+Attributes:
 
-Organization
+- **CNPJ**: Unique Brazilian business registration for the Organization
+- **Status**: Active or Inactive
 
 ---
 
@@ -108,29 +117,114 @@ Examples:
 
 Each Business Unit belongs to exactly one Organization.
 
+Each Business Unit has its own CNPJ.
+
+## Matrix vs. Branch Concept
+
+In Brazilian business structure, a "matriz" (matrix/headquarters) is the primary location and a "filial" (branch) is a secondary location.
+
+In Project Orkestra, this concept is implemented through **CNPJ structure**:
+
+- The **matriz** is a Business Unit with CNPJ ending in `/0001` (standard suffix for headquarters)
+- Each **filial** is a Business Unit with its own unique CNPJ (ending in `/0002`, `/0003`, etc.)
+
+Why CNPJ at 3 levels?
+
+- **Tenant CNPJ**: Root legal entity of the SaaS customer (may not change often)
+- **Organization CNPJ**: Separate legal entity within the Tenant group (e.g., different holding companies or business structures)
+- **Business Unit CNPJ**: Individual location/branch CNPJ (enables local compliance, taxation, and operational independence)
+
+This structure allows organizations with complex hierarchies to accurately represent their legal structure in the system.
+
 Responsibilities:
 
 - Employee allocation
 - Local schedules
 - Local holidays
 - Operational metrics
+- Local business rules
+
+Relationships:
+
+Organization (1) → (N) BusinessUnit
+
+Attributes:
+
+- **CNPJ**: Unique Brazilian business registration for the Business Unit
+- **Status**: Active or Inactive
 
 ---
 
 # Employee
 
-Represents a worker employed by an Organization.
+Represents a worker employed by a Business Unit.
 
-An Employee may work in one or multiple Business Units depending on company policies.
+## Employee Assignment Model
+
+Each Employee belongs to **exactly one Business Unit** through the `BusinessUnitId` field.
+
+This is a deliberate architectural decision:
+
+- **Single Assignment**: An employee has one primary business unit assignment at any given time
+- **No Many-to-Many Relationship**: The relationship between Employee and BusinessUnit is 1-to-N only
+- **Explicit Transfer Operation**: If an employee transfers to a different business unit, this is an explicit operation (`TransferToBusinessUnit`) that updates the `BusinessUnitId`
+- **Temporary Coverage**: Sporadic or temporary work across multiple business units (e.g., covering for a colleague at another location) is **not modeled in the core Employee entity**. This concern is deferred to **Epic 4: Scheduling**, where shift-level assignments will handle temporary coverage through the scheduling system.
+
+## Tenant Access Pattern
+
+Employee does **not** store a `TenantId` directly.
+
+Instead, the Tenant is derived transitively:
+
+```
+Employee.BusinessUnitId
+  ↓
+BusinessUnit.OrganizationId
+  ↓
+Organization.TenantId
+```
+
+This design:
+
+- Reduces data duplication
+- Ensures data consistency (Employee always belongs to the Organization of its BusinessUnit)
+- Simplifies migrations and transfers
+- Prevents orphaned records
+
+Repository queries that need tenant filtering should perform the transitive join.
+
+## Employment Status
+
+Employee status is flexible and supports multiple states:
+
+- **Active**: Employee is working normally
+- **Inactive**: Employee is not part of the company (terminated, retired)
+- **Vacation**: Employee is on planned vacation
+- **FreeDay**: Employee has a day off (used for flexible scheduling)
+- **License**: Employee is on special leave (medical, sabbatical, etc.)
+
+Filtering employees by status is always possible. Queries accepting `EmployeeStatus` parameters should accept a **list of statuses** (not a single value) to enable flexible filtering. The default filter is `[Active]`.
+
+## Role and Permission (Future)
+
+Employee does not directly model authorization roles or responsibilities.
+
+Usage patterns like "Manager who supervises multiple Business Units" or "Lead who coordinates across locations" will be solved by a dedicated **Role and Permission system** (planned for a later epic).
+
+This keeps Employee modeling simple and allows permission structures to evolve independently.
 
 Employee stores information such as:
 
-- Personal information
-- Employment details
+- Personal information (Name, CPF, Email, Phone, Address)
+- Employment details (Status, Hire Date)
+- Business Unit Assignment
 - Working shift
 - Position
-- Employment status
-- Assigned manager
+- Assigned manager (if applicable)
+
+Relationships:
+
+BusinessUnit (1) → (N) Employee
 
 Future versions may include:
 
@@ -138,22 +232,6 @@ Future versions may include:
 - Certifications
 - Emergency contacts
 - Payroll integration
-
----
-
-# Employment Status
-
-Represents the current state of an Employee.
-
-Examples:
-
-- Active
-- Vacation
-- Sick Leave
-- Inactive
-- Terminated
-
-Business rules should respect employee status.
 
 ---
 
