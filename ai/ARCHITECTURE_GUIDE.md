@@ -1,10 +1,10 @@
 ---
 title: Architecture Guide
-version: 1.0.0
+version: 2.0.0
 status: Approved
 owner: Project Orkestra
 author: Wesley Oliveira
-last_updated: 2026-08-05
+last_updated: 2026-08-29
 
 related:
   - PROJECT_CONTEXT.md
@@ -497,6 +497,153 @@ Guidelines:
 - Support pagination
 - Support filtering
 - Support sorting
+
+---
+
+# API Versioning
+
+All endpoints are versioned using URL-based versioning.
+
+Pattern:
+
+```
+/api/v{major}/{resource}
+```
+
+Examples:
+
+```
+GET  /api/v1/organizations
+GET  /api/v1/employees
+POST /api/v1/business-units
+PUT  /api/v1/organizations/{id}
+DELETE /api/v1/employees/{id}
+```
+
+Versioning Strategy:
+
+- Increment **major** version when breaking changes occur (e.g., removing a field, changing response format)
+- New endpoints always use the latest version
+- Old versions may coexist during a deprecation period
+- Deprecation timeline should be communicated to clients (typically 6-12 months notice)
+
+---
+
+# Exception Handling & HTTP Semantics
+
+Project Orkestra uses centralized exception handling via middleware.
+
+Exception-to-HTTP-Status Mapping:
+
+| Exception Type | HTTP Status | Reason |
+|---|---|---|
+| `NotFoundException` | 404 | Resource not found (e.g., Employee ID doesn't exist) |
+| `BusinessRuleException` | 400 | Business rule violated (e.g., cannot deactivate organization with active employees) |
+| `ArgumentException` | 400 | Invalid argument (e.g., invalid CNPJ format) |
+| `ArgumentNullException` | 400 | Null argument (e.g., empty organization name) |
+| `UnauthorizedAccessException` | 403 | User lacks permission (authorization failure) |
+| `Unhandled Exception` | 500 | Unexpected server error |
+
+Response Format:
+
+All errors return RFC 7807 ProblemDetails format:
+
+```json
+{
+  "type": "https://orkestra.com/errors/not-found",
+  "title": "Resource Not Found",
+  "status": 404,
+  "detail": "Employee with ID 'abc123' was not found",
+  "instance": "/api/v1/employees/abc123"
+}
+```
+
+Middleware Implementation:
+
+The `ExceptionHandlingMiddleware` intercepts all exceptions and converts them to appropriate HTTP responses:
+
+```csharp
+public class ExceptionHandlingMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+
+    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
+    {
+        _next = next;
+        _logger = logger;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
+        {
+            await _next(context);
+        }
+        catch (Exception ex)
+        {
+            await HandleExceptionAsync(context, ex);
+        }
+    }
+
+    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        context.Response.ContentType = "application/problem+json";
+
+        var response = new ProblemDetails()
+        {
+            Instance = context.Request.Path
+        };
+
+        switch (exception)
+        {
+            case NotFoundException nfe:
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                response.Title = "Not Found";
+                response.Status = StatusCodes.Status404NotFound;
+                response.Detail = nfe.Message;
+                break;
+
+            case BusinessRuleException bre:
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                response.Title = "Business Rule Violation";
+                response.Status = StatusCodes.Status400BadRequest;
+                response.Detail = bre.Message;
+                break;
+
+            case ArgumentException ae:
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                response.Title = "Invalid Argument";
+                response.Status = StatusCodes.Status400BadRequest;
+                response.Detail = ae.Message;
+                break;
+
+            default:
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                response.Title = "Internal Server Error";
+                response.Status = StatusCodes.Status500InternalServerError;
+                response.Detail = "An unexpected error occurred";
+                break;
+        }
+
+        return context.Response.WriteAsJsonAsync(response);
+    }
+}
+```
+
+Registration in Program.cs:
+
+```csharp
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+```
+
+Security Considerations:
+
+- Never expose stack traces in production
+- Never expose internal exception messages to clients
+- Never expose connection strings or database details
+- Log full exception details internally for debugging
+- Include correlation IDs for tracing
 
 Example:
 
