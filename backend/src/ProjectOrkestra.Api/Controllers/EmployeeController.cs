@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectOrkestra.Application.DTOs;
 using ProjectOrkestra.Application.UseCases.Employee;
+using ProjectOrkestra.Domain.Entities;
 using ProjectOrkestra.Domain.Enums;
 
 namespace ProjectOrkestra.Api.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class EmployeeController : ControllerBase
-{
+public class EmployeeController : ControllerBase {
     private readonly CreateEmployeeUseCase _createEmployeeUseCase;
     private readonly ChangeEmployeeAddressUseCase _changeEmployeeAddressUseCase;
     private readonly ChangeEmployeeCpfUseCase _changeEmployeeCpfUseCase;
@@ -33,8 +33,7 @@ public class EmployeeController : ControllerBase
         RenameEmployeeUseCase renameEmployeeUseCase,
         TransferEmployeeToBusinessUnitUseCase transferEmployeeToBusinessUnitUseCase,
         UpdateStatusEmployeeUseCase updateStatusEmployeeUseCase
-    )
-    {
+    ) {
         _createEmployeeUseCase = createEmployeeUseCase;
         _changeEmployeeAddressUseCase = changeEmployeeAddressUseCase;
         _changeEmployeeCpfUseCase = changeEmployeeCpfUseCase;
@@ -50,36 +49,32 @@ public class EmployeeController : ControllerBase
 
     /// <summary>Creates a new employee.</summary>
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateEmployeeDto dto)
-    {
-        var id = await _createEmployeeUseCase.ExecuteAsync(dto);
+    public async Task<IActionResult> Create([FromBody] CreateEmployeeDto dto) {
+        Guid id = await _createEmployeeUseCase.ExecuteAsync(dto);
 
         return CreatedAtAction(nameof(GetById), new { id }, id);
     }
 
     /// <summary>Gets an employee by its identifier.</summary>
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetById([FromRoute] Guid id)
-    {
-        var employee = await _getEmployeeByIdUseCase.ExecuteAsync(id);
+    public async Task<IActionResult> GetById([FromRoute] Guid id) {
+        Employee? employee = await _getEmployeeByIdUseCase.ExecuteAsync(id);
 
         return Ok(employee);
     }
 
     /// <summary>Lists the employees of a business unit.</summary>
     [HttpGet("business-unit")]
-    public async Task<IActionResult> ListByBusinessUnit([FromQuery] Guid businessUnitId, [FromQuery] IEnumerable<EmployeeStatus>? statuses)
-    {
-        var employees = await _listEmployeesByBusinessUnitUseCase.ExecuteAsync(businessUnitId, statuses);
+    public async Task<IActionResult> ListByBusinessUnit([FromQuery] Guid businessUnitId, [FromQuery] IEnumerable<EmployeeStatus>? statuses) {
+        IEnumerable<Employee?> employees = await _listEmployeesByBusinessUnitUseCase.ExecuteAsync(businessUnitId, statuses);
 
         return Ok(employees);
     }
 
     /// <summary>Lists the employees of an organization.</summary>
     [HttpGet("organization")]
-    public async Task<IActionResult> ListByOrganization([FromQuery] Guid organizationId, [FromQuery] IEnumerable<EmployeeStatus>? statuses)
-    {
-        var employees = await _listEmployeesByOrganizationUseCase.ExecuteAsync(organizationId, statuses);
+    public async Task<IActionResult> ListByOrganization([FromQuery] Guid organizationId, [FromQuery] IEnumerable<EmployeeStatus>? statuses) {
+        IEnumerable<Employee?> employees = await _listEmployeesByOrganizationUseCase.ExecuteAsync(organizationId, statuses);
 
         return Ok(employees);
     }
@@ -89,8 +84,7 @@ public class EmployeeController : ControllerBase
     public async Task<IActionResult> TransferToBusinessUnit(
         [FromRoute] Guid id,
         [FromQuery] Guid targetBusinessUnitId
-    )
-    {
+    ) {
         await _transferEmployeeToBusinessUnitUseCase.ExecuteAsync(id, targetBusinessUnitId);
 
         return NoContent();
@@ -98,8 +92,7 @@ public class EmployeeController : ControllerBase
 
     /// <summary>Changes an employee's name.</summary>
     [HttpPatch("{id:guid}/rename")]
-    public async Task<IActionResult> Rename([FromRoute] Guid id, [FromBody] RenameEmployeeDto dto)
-    {
+    public async Task<IActionResult> Rename([FromRoute] Guid id, [FromBody] RenameEmployeeDto dto) {
         await _renameEmployeeUseCase.ExecuteAsync(id, dto.NewName);
 
         return NoContent();
@@ -110,8 +103,7 @@ public class EmployeeController : ControllerBase
     public async Task<IActionResult> ChangeAddress(
         [FromRoute] Guid id,
         [FromBody] ChangeEmployeeAddressDto dto
-    )
-    {
+    ) {
         await _changeEmployeeAddressUseCase.ExecuteAsync(id, dto.NewAddress);
 
         return NoContent();
@@ -122,8 +114,7 @@ public class EmployeeController : ControllerBase
     public async Task<IActionResult> ChangeCpf(
         [FromRoute] Guid id,
         [FromBody] ChangeEmployeeCpfDto dto
-    )
-    {
+    ) {
         await _changeEmployeeCpfUseCase.ExecuteAsync(id, dto.NewCpf);
 
         return NoContent();
@@ -134,8 +125,7 @@ public class EmployeeController : ControllerBase
     public async Task<IActionResult> ChangeEmail(
         [FromRoute] Guid id,
         [FromBody] ChangeEmployeeEmailDto dto
-    )
-    {
+    ) {
         await _changeEmployeeEmailUseCase.ExecuteAsync(id, dto.NewEmail);
 
         return NoContent();
@@ -146,8 +136,7 @@ public class EmployeeController : ControllerBase
     public async Task<IActionResult> ChangePhone(
         [FromRoute] Guid id,
         [FromBody] ChangeEmployeePhoneDto dto
-    )
-    {
+    ) {
         await _changeEmployeePhoneUseCase.ExecuteAsync(id, dto.NewPhone);
 
         return NoContent();
@@ -158,8 +147,7 @@ public class EmployeeController : ControllerBase
     public async Task<IActionResult> UpdateStatus(
         [FromRoute] Guid id,
         [FromBody] UpdateEmployeeStatusDto dto
-    )
-    {
+    ) {
         await _updateStatusEmployeeUseCase.ExecuteAsync(id, dto.TargetStatus);
 
         return NoContent();
