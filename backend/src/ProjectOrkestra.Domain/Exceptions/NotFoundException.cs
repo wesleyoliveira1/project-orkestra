@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace ProjectOrkestra.Domain.Exceptions;
 
-namespace ProjectOrkestra.Domain.Exceptions;
-
-public class NotFoundException : Exception
-{
+public class NotFoundException : Exception {
     public NotFoundException(string message)
         : base(message) { }
 }
