@@ -28,7 +28,10 @@ public class BusinessUnitRepository : IBusinessUnitRepository
         return await _context.BusinessUnits.Find(filter).FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<BusinessUnit?>> GetAllByOrganizationIdAsync(Guid organizationId, IEnumerable<BusinessUnitStatus> statuses)
+    public async Task<IEnumerable<BusinessUnit?>> GetAllByOrganizationIdAsync(
+        Guid organizationId,
+        IEnumerable<BusinessUnitStatus> statuses
+    )
     {
         var filter = Builders<BusinessUnit>.Filter.And(
             Builders<BusinessUnit>.Filter.Eq(x => x.OrganizationId, organizationId),

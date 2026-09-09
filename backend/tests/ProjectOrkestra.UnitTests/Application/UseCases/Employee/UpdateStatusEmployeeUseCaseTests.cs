@@ -21,7 +21,13 @@ public class UpdateStatusEmployeeUseCaseTests
         UpdateStatusEmployeeUseCase useCase = new UpdateStatusEmployeeUseCase(repository);
 
         var employee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+            Guid.NewGuid(),
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
         employee.Vacation();
 
         repository.GetByIdAsync(employee.Id).Returns(employee);
@@ -42,7 +48,13 @@ public class UpdateStatusEmployeeUseCaseTests
         UpdateStatusEmployeeUseCase useCase = new UpdateStatusEmployeeUseCase(repository);
 
         var employee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+            Guid.NewGuid(),
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
 
         repository.GetByIdAsync(employee.Id).Returns(employee);
 
@@ -62,7 +74,13 @@ public class UpdateStatusEmployeeUseCaseTests
         UpdateStatusEmployeeUseCase useCase = new UpdateStatusEmployeeUseCase(repository);
 
         var employee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+            Guid.NewGuid(),
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
 
         repository.GetByIdAsync(employee.Id).Returns(employee);
 
@@ -82,7 +100,13 @@ public class UpdateStatusEmployeeUseCaseTests
         UpdateStatusEmployeeUseCase useCase = new UpdateStatusEmployeeUseCase(repository);
 
         var employee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+            Guid.NewGuid(),
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
 
         repository.GetByIdAsync(employee.Id).Returns(employee);
 
@@ -102,7 +126,13 @@ public class UpdateStatusEmployeeUseCaseTests
         UpdateStatusEmployeeUseCase useCase = new UpdateStatusEmployeeUseCase(repository);
 
         var employee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+            Guid.NewGuid(),
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
 
         repository.GetByIdAsync(employee.Id).Returns(employee);
 
@@ -122,11 +152,14 @@ public class UpdateStatusEmployeeUseCaseTests
         UpdateStatusEmployeeUseCase useCase = new UpdateStatusEmployeeUseCase(repository);
 
         var nonExistentId = Guid.NewGuid();
-        repository.GetByIdAsync(nonExistentId).Returns((ProjectOrkestra.Domain.Entities.Employee?)null);
+        repository
+            .GetByIdAsync(nonExistentId)
+            .Returns((ProjectOrkestra.Domain.Entities.Employee?)null);
 
         // Act & Assert
         await Assert.ThrowsAsync<NotFoundException>(() =>
-            useCase.ExecuteAsync(nonExistentId, EmployeeStatus.Active));
+            useCase.ExecuteAsync(nonExistentId, EmployeeStatus.Active)
+        );
     }
 
     [Fact]
@@ -137,7 +170,13 @@ public class UpdateStatusEmployeeUseCaseTests
         UpdateStatusEmployeeUseCase useCase = new UpdateStatusEmployeeUseCase(repository);
 
         var employee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+            Guid.NewGuid(),
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
 
         repository.GetByIdAsync(employee.Id).Returns(employee);
 
@@ -169,7 +208,13 @@ public class UpdateStatusEmployeeUseCaseTests
         UpdateStatusEmployeeUseCase useCase = new UpdateStatusEmployeeUseCase(repository);
 
         var employee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+            Guid.NewGuid(),
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
         employee.Deactivate();
 
         repository.GetByIdAsync(employee.Id).Returns(employee);
@@ -178,8 +223,12 @@ public class UpdateStatusEmployeeUseCaseTests
         await useCase.ExecuteAsync(employee.Id, EmployeeStatus.Active);
 
         // Assert
-        await repository.Received(1).UpdateAsync(Arg.Is<ProjectOrkestra.Domain.Entities.Employee>(emp =>
-            emp.Id == employee.Id && emp.Status == EmployeeStatus.Active
-        ));
+        await repository
+            .Received(1)
+            .UpdateAsync(
+                Arg.Is<ProjectOrkestra.Domain.Entities.Employee>(emp =>
+                    emp.Id == employee.Id && emp.Status == EmployeeStatus.Active
+                )
+            );
     }
 }

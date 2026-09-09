@@ -2,8 +2,8 @@ using System;
 using MongoDB.Driver;
 using ProjectOrkestra.Application.Interfaces;
 using ProjectOrkestra.Domain.Entities;
-using ProjectOrkestra.Infrastructure.Data;
 using ProjectOrkestra.Domain.Enums;
+using ProjectOrkestra.Infrastructure.Data;
 
 namespace ProjectOrkestra.Infrastructure.Repositories;
 
@@ -28,7 +28,10 @@ public class EmployeeRepository : IEmployeeRepository
         return await _context.Employees.Find(filter).FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<Employee?>> GetAllByBusinessUnitIdAsync(Guid businessUnitId, IEnumerable<EmployeeStatus> statuses)
+    public async Task<IEnumerable<Employee?>> GetAllByBusinessUnitIdAsync(
+        Guid businessUnitId,
+        IEnumerable<EmployeeStatus> statuses
+    )
     {
         var filter = Builders<Employee>.Filter.And(
             Builders<Employee>.Filter.Eq(x => x.BusinessUnitId, businessUnitId),
@@ -38,7 +41,10 @@ public class EmployeeRepository : IEmployeeRepository
         return await _context.Employees.Find(filter).ToListAsync();
     }
 
-    public async Task<IEnumerable<Employee>> GetAllByOrganizationIdAsync(Guid organizationId, IEnumerable<EmployeeStatus> statuses)
+    public async Task<IEnumerable<Employee>> GetAllByOrganizationIdAsync(
+        Guid organizationId,
+        IEnumerable<EmployeeStatus> statuses
+    )
     {
         var businessUnitFilter = Builders<BusinessUnit>.Filter.Eq(
             x => x.OrganizationId,

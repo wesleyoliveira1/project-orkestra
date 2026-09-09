@@ -15,7 +15,10 @@ public class ListEmployeesByOrganizationUseCase
         _repository = repository;
     }
 
-    public async Task<IEnumerable<Domain.Entities.Employee?>> ExecuteAsync(Guid organizationId, IEnumerable<EmployeeStatus>? statuses = null)
+    public async Task<IEnumerable<Domain.Entities.Employee?>> ExecuteAsync(
+        Guid organizationId,
+        IEnumerable<EmployeeStatus>? statuses = null
+    )
     {
         var statusFilter = statuses ?? new[] { EmployeeStatus.Active };
 

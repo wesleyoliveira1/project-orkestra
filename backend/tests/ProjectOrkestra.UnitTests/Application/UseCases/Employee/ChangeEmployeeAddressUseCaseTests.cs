@@ -20,7 +20,13 @@ public class ChangeEmployeeAddressUseCaseTests
         ChangeEmployeeAddressUseCase useCase = new ChangeEmployeeAddressUseCase(repository);
 
         var employee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+            Guid.NewGuid(),
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
 
         repository.GetByIdAsync(employee.Id).Returns(employee);
 
@@ -40,11 +46,14 @@ public class ChangeEmployeeAddressUseCaseTests
         ChangeEmployeeAddressUseCase useCase = new ChangeEmployeeAddressUseCase(repository);
 
         var nonExistentId = Guid.NewGuid();
-        repository.GetByIdAsync(nonExistentId).Returns((ProjectOrkestra.Domain.Entities.Employee?)null);
+        repository
+            .GetByIdAsync(nonExistentId)
+            .Returns((ProjectOrkestra.Domain.Entities.Employee?)null);
 
         // Act & Assert
         await Assert.ThrowsAsync<NotFoundException>(() =>
-            useCase.ExecuteAsync(nonExistentId, "Avenida Paulista, 1000"));
+            useCase.ExecuteAsync(nonExistentId, "Avenida Paulista, 1000")
+        );
     }
 
     [Fact]
@@ -55,7 +64,13 @@ public class ChangeEmployeeAddressUseCaseTests
         ChangeEmployeeAddressUseCase useCase = new ChangeEmployeeAddressUseCase(repository);
 
         var employee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+            Guid.NewGuid(),
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
 
         repository.GetByIdAsync(employee.Id).Returns(employee);
 
@@ -63,9 +78,13 @@ public class ChangeEmployeeAddressUseCaseTests
         await useCase.ExecuteAsync(employee.Id, "Rua Tiradentes, 456");
 
         // Assert
-        await repository.Received(1).UpdateAsync(Arg.Is<ProjectOrkestra.Domain.Entities.Employee>(emp =>
-            emp.Id == employee.Id && emp.Address == "Rua Tiradentes, 456"
-        ));
+        await repository
+            .Received(1)
+            .UpdateAsync(
+                Arg.Is<ProjectOrkestra.Domain.Entities.Employee>(emp =>
+                    emp.Id == employee.Id && emp.Address == "Rua Tiradentes, 456"
+                )
+            );
     }
 
     [Fact]
@@ -76,7 +95,13 @@ public class ChangeEmployeeAddressUseCaseTests
         ChangeEmployeeAddressUseCase useCase = new ChangeEmployeeAddressUseCase(repository);
 
         var employee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+            Guid.NewGuid(),
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
 
         repository.GetByIdAsync(employee.Id).Returns(employee);
 

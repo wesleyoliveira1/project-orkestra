@@ -20,7 +20,7 @@ public class CreateEmployeeUseCaseTests
             Cpf = "111.444.777-35",
             Email = "joao@email.com",
             Phone = "(11) 99999-9999",
-            Address = "Rua das Flores, 123"
+            Address = "Rua das Flores, 123",
         };
 
         var id = await useCase.ExecuteAsync(dto);

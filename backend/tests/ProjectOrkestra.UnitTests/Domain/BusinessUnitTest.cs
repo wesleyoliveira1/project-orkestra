@@ -3,7 +3,8 @@ using ProjectOrkestra.Domain.Enums;
 
 namespace ProjectOrkestra.UnitTests.Domain;
 
-public class BusinessUnitTests {
+public class BusinessUnitTests
+{
     private static readonly Guid ValidOrganizationId = Guid.NewGuid();
     private const string ValidCnpj = "11.222.333/0001-81";
     private const string ValidName = "Loja 1";
@@ -13,7 +14,8 @@ public class BusinessUnitTests {
         new(ValidOrganizationId, ValidName, ValidCnpj, ValidAddress);
 
     [Fact]
-    public void Constructor_WithValidData_CreatesBusinessUnitAsActive() {
+    public void Constructor_WithValidData_CreatesBusinessUnitAsActive()
+    {
         BusinessUnit businessUnit = CreateValidBusinessUnit();
 
         Assert.Equal(BusinessUnitStatus.Active, businessUnit.Status);
@@ -22,27 +24,34 @@ public class BusinessUnitTests {
     }
 
     [Fact]
-    public void Constructor_WithEmptyOrganizationId_ThrowsArgumentException() {
+    public void Constructor_WithEmptyOrganizationId_ThrowsArgumentException()
+    {
         Assert.Throws<ArgumentException>(() =>
-            new BusinessUnit(Guid.Empty, ValidName, ValidCnpj, ValidAddress));
+            new BusinessUnit(Guid.Empty, ValidName, ValidCnpj, ValidAddress)
+        );
     }
 
     [Fact]
-    public void Constructor_WithEmptyAddress_ThrowsArgumentException() {
+    public void Constructor_WithEmptyAddress_ThrowsArgumentException()
+    {
         Assert.Throws<ArgumentException>(() =>
-            new BusinessUnit(ValidOrganizationId, ValidName, ValidCnpj, ""));
+            new BusinessUnit(ValidOrganizationId, ValidName, ValidCnpj, "")
+        );
     }
 
     [Theory]
     [InlineData("")]
     [InlineData("123")]
-    public void Constructor_WithInvalidCnpj_ThrowsArgumentException(string invalidCnpj) {
+    public void Constructor_WithInvalidCnpj_ThrowsArgumentException(string invalidCnpj)
+    {
         Assert.Throws<ArgumentException>(() =>
-            new BusinessUnit(ValidOrganizationId, ValidName, invalidCnpj, ValidAddress));
+            new BusinessUnit(ValidOrganizationId, ValidName, invalidCnpj, ValidAddress)
+        );
     }
 
     [Fact]
-    public void ChangeAddress_WithValidAddress_UpdatesAddressAndTimestamp() {
+    public void ChangeAddress_WithValidAddress_UpdatesAddressAndTimestamp()
+    {
         BusinessUnit businessUnit = CreateValidBusinessUnit();
 
         businessUnit.ChangeAddress("Av. Principal, 500");
@@ -52,14 +61,16 @@ public class BusinessUnitTests {
     }
 
     [Fact]
-    public void ChangeAddress_WithEmptyAddress_ThrowsArgumentException() {
+    public void ChangeAddress_WithEmptyAddress_ThrowsArgumentException()
+    {
         BusinessUnit businessUnit = CreateValidBusinessUnit();
 
         Assert.Throws<ArgumentException>(() => businessUnit.ChangeAddress(""));
     }
 
     [Fact]
-    public void Deactivate_SetsStatusToInactiveAndUpdatesTimestamp() {
+    public void Deactivate_SetsStatusToInactiveAndUpdatesTimestamp()
+    {
         BusinessUnit businessUnit = CreateValidBusinessUnit();
 
         businessUnit.Deactivate();

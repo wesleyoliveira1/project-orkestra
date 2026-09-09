@@ -31,7 +31,10 @@ public class OrganizationRepository : IOrganizationRepository
         return await _context.Organizations.Find(filter).FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<Organization>> GetAllByTenantIdAsync(Guid tenantId, IEnumerable<OrganizationStatus> statuses)
+    public async Task<IEnumerable<Organization>> GetAllByTenantIdAsync(
+        Guid tenantId,
+        IEnumerable<OrganizationStatus> statuses
+    )
     {
         var filter = Builders<Organization>.Filter.And(
             Builders<Organization>.Filter.Eq(x => x.TenantId, tenantId),

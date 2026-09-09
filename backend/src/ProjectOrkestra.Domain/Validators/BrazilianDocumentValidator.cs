@@ -31,7 +31,10 @@ public static class BrazilianDocumentValidator
         if (!HasExpectedLength(normalizedValue, 14) || HasRepeatedCharacters(normalizedValue))
             return false;
 
-        if (!normalizedValue[..12].All(char.IsLetterOrDigit) || !normalizedValue[12..].All(char.IsDigit))
+        if (
+            !normalizedValue[..12].All(char.IsLetterOrDigit)
+            || !normalizedValue[12..].All(char.IsDigit)
+        )
             return false;
 
         return true;

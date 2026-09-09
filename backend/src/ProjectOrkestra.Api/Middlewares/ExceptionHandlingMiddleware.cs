@@ -2,50 +2,64 @@ using ProjectOrkestra.Domain.Exceptions;
 
 namespace ProjectOrkestra.Api.Middlewares;
 
-public class ExceptionHandlingMiddleware {
+public class ExceptionHandlingMiddleware
+{
     private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionHandlingMiddleware> _logger;
 
     public ExceptionHandlingMiddleware(
         RequestDelegate next,
         ILogger<ExceptionHandlingMiddleware> logger
-    ) {
+    )
+    {
         _next = next;
         _logger = logger;
     }
 
-    public async Task InvokeAsync(HttpContext context) {
-        try {
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
+        {
             await _next(context);
-        } catch(NotFoundException ex) {
+        }
+        catch (NotFoundException ex)
+        {
             await WriteProblemAsync(
                 context,
                 StatusCodes.Status404NotFound,
                 "Not Found",
                 ex.Message
             );
-        } catch(BusinessRuleException ex) {
+        }
+        catch (BusinessRuleException ex)
+        {
             await WriteProblemAsync(
                 context,
                 StatusCodes.Status404NotFound,
                 "Business Rule Violation",
                 ex.Message
             );
-        } catch(UnauthorizedCredentialsException ex) {
+        }
+        catch (UnauthorizedCredentialsException ex)
+        {
             await WriteProblemAsync(
                 context,
                 StatusCodes.Status401Unauthorized,
                 "Invalid Credentials",
                 ex.Message
             );
-        } catch(ArgumentException ex) {
+        }
+        catch (ArgumentException ex)
+        {
             await WriteProblemAsync(
                 context,
                 StatusCodes.Status400BadRequest,
                 "Invalid Request",
                 ex.Message
             );
-        } catch(Exception ex) {
+        }
+        catch (Exception ex)
+        {
             _logger.LogError(ex, "Unhandled exception occurred.");
             await WriteProblemAsync(
                 context,
@@ -61,11 +75,13 @@ public class ExceptionHandlingMiddleware {
         int statusCode,
         string title,
         string detail
-    ) {
+    )
+    {
         context.Response.ContentType = "application/problem+json";
         context.Response.StatusCode = statusCode;
 
-        var problem = new {
+        var problem = new
+        {
             title,
             status = statusCode,
             detail,

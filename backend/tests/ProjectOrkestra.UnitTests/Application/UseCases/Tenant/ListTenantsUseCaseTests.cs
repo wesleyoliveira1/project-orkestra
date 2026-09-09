@@ -4,19 +4,22 @@ using ProjectOrkestra.Application.UseCases.Tenant;
 
 namespace ProjectOrkestra.UnitTests.Application.UseCases.Tenant;
 
-public class ListTenantsUseCaseTests {
+public class ListTenantsUseCaseTests
+{
     private const string ValidCnpj = "11.222.333/0001-81";
 
     [Fact]
-    public async Task ExecuteAsync_WhenTenantsExist_ReturnsAllOfThem() {
+    public async Task ExecuteAsync_WhenTenantsExist_ReturnsAllOfThem()
+    {
         ITenantRepository repository = Substitute.For<ITenantRepository>();
         ListTenantsUseCase useCase = new ListTenantsUseCase(repository);
 
-        List<ProjectOrkestra.Domain.Entities.Tenant> tenants = new List<ProjectOrkestra.Domain.Entities.Tenant>
-        {
-            new("Drogaria Araújo", ValidCnpj),
-            new("Farmácia Popular", ValidCnpj)
-        };
+        List<ProjectOrkestra.Domain.Entities.Tenant> tenants =
+            new List<ProjectOrkestra.Domain.Entities.Tenant>
+            {
+                new("Drogaria Araújo", ValidCnpj),
+                new("Farmácia Popular", ValidCnpj),
+            };
 
         repository.GetAllAsync().Returns(tenants);
 
@@ -26,7 +29,8 @@ public class ListTenantsUseCaseTests {
     }
 
     [Fact]
-    public async Task ExecuteAsync_WhenNoTenantsExist_ReturnsEmptyList() {
+    public async Task ExecuteAsync_WhenNoTenantsExist_ReturnsEmptyList()
+    {
         ITenantRepository repository = Substitute.For<ITenantRepository>();
         ListTenantsUseCase useCase = new ListTenantsUseCase(repository);
 

@@ -1,8 +1,9 @@
 ﻿namespace ProjectOrkestra.Domain.Enums;
 
-public enum UserRole {
+public enum UserRole
+{
     PlatformAdmin,
     OrganizationAdmin,
     Manager,
-    Employee
+    Employee,
 }

@@ -42,14 +42,21 @@ public class OrganizationRepositoryTests : IClassFixture<MongoDbTestFixture>
         // Arrange
         var tenantId = Guid.NewGuid();
         var activeOrganization = new Organization(tenantId, "Farmácia Ativa", ValidCnpj);
-        var inactiveOrganization = new Organization(tenantId, "Farmácia Inativa", "22.333.444/0001-82");
+        var inactiveOrganization = new Organization(
+            tenantId,
+            "Farmácia Inativa",
+            "22.333.444/0001-82"
+        );
         inactiveOrganization.Deactivate();
 
         await _repository.AddAsync(activeOrganization);
         await _repository.AddAsync(inactiveOrganization);
 
         // Act
-        var result = await _repository.GetAllByTenantIdAsync(tenantId, new[] { OrganizationStatus.Active });
+        var result = await _repository.GetAllByTenantIdAsync(
+            tenantId,
+            new[] { OrganizationStatus.Active }
+        );
 
         // Assert
         Assert.Single(result);
@@ -63,14 +70,21 @@ public class OrganizationRepositoryTests : IClassFixture<MongoDbTestFixture>
         // Arrange
         var tenantId = Guid.NewGuid();
         var activeOrganization = new Organization(tenantId, "Farmácia Ativa", ValidCnpj);
-        var inactiveOrganization = new Organization(tenantId, "Farmácia Inativa", "22.333.444/0001-82");
+        var inactiveOrganization = new Organization(
+            tenantId,
+            "Farmácia Inativa",
+            "22.333.444/0001-82"
+        );
         inactiveOrganization.Deactivate();
 
         await _repository.AddAsync(activeOrganization);
         await _repository.AddAsync(inactiveOrganization);
 
         // Act
-        var result = await _repository.GetAllByTenantIdAsync(tenantId, new[] { OrganizationStatus.Inactive });
+        var result = await _repository.GetAllByTenantIdAsync(
+            tenantId,
+            new[] { OrganizationStatus.Inactive }
+        );
 
         // Assert
         Assert.Single(result);
@@ -84,15 +98,21 @@ public class OrganizationRepositoryTests : IClassFixture<MongoDbTestFixture>
         // Arrange
         var tenantId = Guid.NewGuid();
         var activeOrganization = new Organization(tenantId, "Farmácia Ativa", ValidCnpj);
-        var inactiveOrganization = new Organization(tenantId, "Farmácia Inativa", "22.333.444/0001-82");
+        var inactiveOrganization = new Organization(
+            tenantId,
+            "Farmácia Inativa",
+            "22.333.444/0001-82"
+        );
         inactiveOrganization.Deactivate();
 
         await _repository.AddAsync(activeOrganization);
         await _repository.AddAsync(inactiveOrganization);
 
         // Act
-        var result = await _repository.GetAllByTenantIdAsync(tenantId, 
-            new[] { OrganizationStatus.Active, OrganizationStatus.Inactive });
+        var result = await _repository.GetAllByTenantIdAsync(
+            tenantId,
+            new[] { OrganizationStatus.Active, OrganizationStatus.Inactive }
+        );
 
         // Assert
         Assert.Equal(2, result.Count());
@@ -109,7 +129,10 @@ public class OrganizationRepositoryTests : IClassFixture<MongoDbTestFixture>
         await _repository.AddAsync(organization);
 
         // Act
-        var result = await _repository.GetAllByTenantIdAsync(tenantId2, new[] { OrganizationStatus.Active });
+        var result = await _repository.GetAllByTenantIdAsync(
+            tenantId2,
+            new[] { OrganizationStatus.Active }
+        );
 
         // Assert
         Assert.Empty(result);

@@ -6,16 +6,23 @@ using ProjectOrkestra.Domain.Exceptions;
 
 namespace ProjectOrkestra.UnitTests.Application.UseCases.BusinessUnit;
 
-public class UpdateStatusBusinessUnitUseCaseTests {
+public class UpdateStatusBusinessUnitUseCaseTests
+{
     private const string ValidCnpj = "11.222.333/0001-81";
 
     [Fact]
-    public async Task ExecuteAsync_WithInactiveTarget_DeactivatesAndPersists() {
+    public async Task ExecuteAsync_WithInactiveTarget_DeactivatesAndPersists()
+    {
         IBusinessUnitRepository repository = Substitute.For<IBusinessUnitRepository>();
         UpdateStatusBusinessUnitUseCase useCase = new UpdateStatusBusinessUnitUseCase(repository);
 
-        ProjectOrkestra.Domain.Entities.BusinessUnit businessUnit = new ProjectOrkestra.Domain.Entities.BusinessUnit(
-            Guid.NewGuid(), "Loja 1", ValidCnpj, "Rua A, 1");
+        ProjectOrkestra.Domain.Entities.BusinessUnit businessUnit =
+            new ProjectOrkestra.Domain.Entities.BusinessUnit(
+                Guid.NewGuid(),
+                "Loja 1",
+                ValidCnpj,
+                "Rua A, 1"
+            );
 
         repository.GetByIdAsync(businessUnit.Id).Returns(businessUnit);
 
@@ -26,14 +33,18 @@ public class UpdateStatusBusinessUnitUseCaseTests {
     }
 
     [Fact]
-    public async Task ExecuteAsync_WhenBusinessUnitDoesNotExist_ThrowsNotFoundException() {
+    public async Task ExecuteAsync_WhenBusinessUnitDoesNotExist_ThrowsNotFoundException()
+    {
         IBusinessUnitRepository repository = Substitute.For<IBusinessUnitRepository>();
         UpdateStatusBusinessUnitUseCase useCase = new UpdateStatusBusinessUnitUseCase(repository);
 
         Guid nonExistentId = Guid.NewGuid();
-        repository.GetByIdAsync(nonExistentId).Returns((ProjectOrkestra.Domain.Entities.BusinessUnit?)null);
+        repository
+            .GetByIdAsync(nonExistentId)
+            .Returns((ProjectOrkestra.Domain.Entities.BusinessUnit?)null);
 
         await Assert.ThrowsAsync<NotFoundException>(() =>
-            useCase.ExecuteAsync(nonExistentId, BusinessUnitStatus.Active));
+            useCase.ExecuteAsync(nonExistentId, BusinessUnitStatus.Active)
+        );
     }
 }

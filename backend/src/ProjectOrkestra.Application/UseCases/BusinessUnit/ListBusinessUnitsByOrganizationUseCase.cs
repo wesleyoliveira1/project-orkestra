@@ -15,7 +15,10 @@ public class ListBusinessUnitsByOrganizationUseCase
         _repository = repository;
     }
 
-    public async Task<IEnumerable<Domain.Entities.BusinessUnit?>> ExecuteAsync(Guid organizationId, IEnumerable<BusinessUnitStatus>? statuses = null)
+    public async Task<IEnumerable<Domain.Entities.BusinessUnit?>> ExecuteAsync(
+        Guid organizationId,
+        IEnumerable<BusinessUnitStatus>? statuses = null
+    )
     {
         var statusFilter = statuses ?? new[] { BusinessUnitStatus.Active };
 

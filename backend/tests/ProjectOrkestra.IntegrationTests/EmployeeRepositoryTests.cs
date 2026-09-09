@@ -26,7 +26,14 @@ public class EmployeeRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var businessUnitId = Guid.NewGuid();
-        var employee = new Employee(businessUnitId, "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+        var employee = new Employee(
+            businessUnitId,
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
 
         // Act
         await _repository.AddAsync(employee);
@@ -47,15 +54,32 @@ public class EmployeeRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var businessUnitId = Guid.NewGuid();
-        var activeEmployee = new Employee(businessUnitId, "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
-        var inactiveEmployee = new Employee(businessUnitId, "Maria Santos", "222.555.888-46", "maria@email.com", "(11) 98888-8888", "Avenida Paulista, 1000");
+        var activeEmployee = new Employee(
+            businessUnitId,
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
+        var inactiveEmployee = new Employee(
+            businessUnitId,
+            "Maria Santos",
+            "222.555.888-46",
+            "maria@email.com",
+            "(11) 98888-8888",
+            "Avenida Paulista, 1000"
+        );
         inactiveEmployee.Deactivate();
 
         await _repository.AddAsync(activeEmployee);
         await _repository.AddAsync(inactiveEmployee);
 
         // Act
-        var result = await _repository.GetAllByBusinessUnitIdAsync(businessUnitId, new[] { EmployeeStatus.Active });
+        var result = await _repository.GetAllByBusinessUnitIdAsync(
+            businessUnitId,
+            new[] { EmployeeStatus.Active }
+        );
 
         // Assert
         Assert.Single(result);
@@ -68,15 +92,32 @@ public class EmployeeRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var businessUnitId = Guid.NewGuid();
-        var activeEmployee = new Employee(businessUnitId, "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
-        var inactiveEmployee = new Employee(businessUnitId, "Maria Santos", "222.555.888-46", "maria@email.com", "(11) 98888-8888", "Avenida Paulista, 1000");
+        var activeEmployee = new Employee(
+            businessUnitId,
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
+        var inactiveEmployee = new Employee(
+            businessUnitId,
+            "Maria Santos",
+            "222.555.888-46",
+            "maria@email.com",
+            "(11) 98888-8888",
+            "Avenida Paulista, 1000"
+        );
         inactiveEmployee.Deactivate();
 
         await _repository.AddAsync(activeEmployee);
         await _repository.AddAsync(inactiveEmployee);
 
         // Act
-        var result = await _repository.GetAllByBusinessUnitIdAsync(businessUnitId, new[] { EmployeeStatus.Inactive });
+        var result = await _repository.GetAllByBusinessUnitIdAsync(
+            businessUnitId,
+            new[] { EmployeeStatus.Inactive }
+        );
 
         // Assert
         Assert.Single(result);
@@ -89,16 +130,32 @@ public class EmployeeRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var businessUnitId = Guid.NewGuid();
-        var activeEmployee = new Employee(businessUnitId, "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
-        var vacationEmployee = new Employee(businessUnitId, "Maria Santos", "222.555.888-46", "maria@email.com", "(11) 98888-8888", "Avenida Paulista, 1000");
+        var activeEmployee = new Employee(
+            businessUnitId,
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
+        var vacationEmployee = new Employee(
+            businessUnitId,
+            "Maria Santos",
+            "222.555.888-46",
+            "maria@email.com",
+            "(11) 98888-8888",
+            "Avenida Paulista, 1000"
+        );
         vacationEmployee.Vacation();
 
         await _repository.AddAsync(activeEmployee);
         await _repository.AddAsync(vacationEmployee);
 
         // Act
-        var result = await _repository.GetAllByBusinessUnitIdAsync(businessUnitId,
-            new[] { EmployeeStatus.Active, EmployeeStatus.Vacation });
+        var result = await _repository.GetAllByBusinessUnitIdAsync(
+            businessUnitId,
+            new[] { EmployeeStatus.Active, EmployeeStatus.Vacation }
+        );
 
         // Assert
         Assert.Equal(2, result.Count());
@@ -110,12 +167,22 @@ public class EmployeeRepositoryTests : IClassFixture<MongoDbTestFixture>
         // Arrange
         var businessUnitId1 = Guid.NewGuid();
         var businessUnitId2 = Guid.NewGuid();
-        var employee = new Employee(businessUnitId1, "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+        var employee = new Employee(
+            businessUnitId1,
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
 
         await _repository.AddAsync(employee);
 
         // Act
-        var result = await _repository.GetAllByBusinessUnitIdAsync(businessUnitId2, new[] { EmployeeStatus.Active });
+        var result = await _repository.GetAllByBusinessUnitIdAsync(
+            businessUnitId2,
+            new[] { EmployeeStatus.Active }
+        );
 
         // Assert
         Assert.Empty(result);
@@ -126,9 +193,28 @@ public class EmployeeRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var organizationId = Guid.NewGuid();
-        var businessUnit = new BusinessUnit(organizationId, "Farmácia Centro", "11.222.333/0001-81", "Rua das Flores, 123");
-        var activeEmployee = new Employee(businessUnit.Id, "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
-        var inactiveEmployee = new Employee(businessUnit.Id, "Maria Santos", "222.555.888-46", "maria@email.com", "(11) 98888-8888", "Avenida Paulista, 1000");
+        var businessUnit = new BusinessUnit(
+            organizationId,
+            "Farmácia Centro",
+            "11.222.333/0001-81",
+            "Rua das Flores, 123"
+        );
+        var activeEmployee = new Employee(
+            businessUnit.Id,
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
+        var inactiveEmployee = new Employee(
+            businessUnit.Id,
+            "Maria Santos",
+            "222.555.888-46",
+            "maria@email.com",
+            "(11) 98888-8888",
+            "Avenida Paulista, 1000"
+        );
         inactiveEmployee.Deactivate();
 
         await _businessUnitRepository.AddAsync(businessUnit);
@@ -136,7 +222,10 @@ public class EmployeeRepositoryTests : IClassFixture<MongoDbTestFixture>
         await _repository.AddAsync(inactiveEmployee);
 
         // Act
-        var result = await _repository.GetAllByOrganizationIdAsync(organizationId, new[] { EmployeeStatus.Active });
+        var result = await _repository.GetAllByOrganizationIdAsync(
+            organizationId,
+            new[] { EmployeeStatus.Active }
+        );
 
         // Assert
         Assert.Single(result);
@@ -149,11 +238,35 @@ public class EmployeeRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var organizationId = Guid.NewGuid();
-        var businessUnit1 = new BusinessUnit(organizationId, "Farmácia Centro", "11.222.333/0001-81", "Rua das Flores, 123");
-        var businessUnit2 = new BusinessUnit(organizationId, "Farmácia Sul", "22.333.444/0001-82", "Avenida Paulista, 1000");
+        var businessUnit1 = new BusinessUnit(
+            organizationId,
+            "Farmácia Centro",
+            "11.222.333/0001-81",
+            "Rua das Flores, 123"
+        );
+        var businessUnit2 = new BusinessUnit(
+            organizationId,
+            "Farmácia Sul",
+            "22.333.444/0001-82",
+            "Avenida Paulista, 1000"
+        );
 
-        var employee1 = new Employee(businessUnit1.Id, "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
-        var employee2 = new Employee(businessUnit2.Id, "Maria Santos", "222.555.888-46", "maria@email.com", "(11) 98888-8888", "Avenida Paulista, 1000");
+        var employee1 = new Employee(
+            businessUnit1.Id,
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
+        var employee2 = new Employee(
+            businessUnit2.Id,
+            "Maria Santos",
+            "222.555.888-46",
+            "maria@email.com",
+            "(11) 98888-8888",
+            "Avenida Paulista, 1000"
+        );
 
         await _businessUnitRepository.AddAsync(businessUnit1);
         await _businessUnitRepository.AddAsync(businessUnit2);
@@ -161,7 +274,10 @@ public class EmployeeRepositoryTests : IClassFixture<MongoDbTestFixture>
         await _repository.AddAsync(employee2);
 
         // Act
-        var result = await _repository.GetAllByOrganizationIdAsync(organizationId, new[] { EmployeeStatus.Active });
+        var result = await _repository.GetAllByOrganizationIdAsync(
+            organizationId,
+            new[] { EmployeeStatus.Active }
+        );
 
         // Assert
         Assert.Equal(2, result.Count());
@@ -173,14 +289,29 @@ public class EmployeeRepositoryTests : IClassFixture<MongoDbTestFixture>
         // Arrange
         var organizationId1 = Guid.NewGuid();
         var organizationId2 = Guid.NewGuid();
-        var businessUnit = new BusinessUnit(organizationId1, "Farmácia Centro", "11.222.333/0001-81", "Rua das Flores, 123");
-        var employee = new Employee(businessUnit.Id, "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+        var businessUnit = new BusinessUnit(
+            organizationId1,
+            "Farmácia Centro",
+            "11.222.333/0001-81",
+            "Rua das Flores, 123"
+        );
+        var employee = new Employee(
+            businessUnit.Id,
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
 
         await _businessUnitRepository.AddAsync(businessUnit);
         await _repository.AddAsync(employee);
 
         // Act
-        var result = await _repository.GetAllByOrganizationIdAsync(organizationId2, new[] { EmployeeStatus.Active });
+        var result = await _repository.GetAllByOrganizationIdAsync(
+            organizationId2,
+            new[] { EmployeeStatus.Active }
+        );
 
         // Assert
         Assert.Empty(result);
@@ -191,7 +322,14 @@ public class EmployeeRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var businessUnitId = Guid.NewGuid();
-        var employee = new Employee(businessUnitId, "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+        var employee = new Employee(
+            businessUnitId,
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
         await _repository.AddAsync(employee);
 
         // Act
@@ -210,7 +348,14 @@ public class EmployeeRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var businessUnitId = Guid.NewGuid();
-        var employee = new Employee(businessUnitId, "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+        var employee = new Employee(
+            businessUnitId,
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
         await _repository.AddAsync(employee);
 
         // Act
@@ -229,7 +374,14 @@ public class EmployeeRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var businessUnitId = Guid.NewGuid();
-        var employee = new Employee(businessUnitId, "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+        var employee = new Employee(
+            businessUnitId,
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
         await _repository.AddAsync(employee);
 
         // Act
@@ -248,7 +400,14 @@ public class EmployeeRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var businessUnitId = Guid.NewGuid();
-        var employee = new Employee(businessUnitId, "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+        var employee = new Employee(
+            businessUnitId,
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
         await _repository.AddAsync(employee);
         var originalCreatedAt = employee.CreatedAt;
 
@@ -273,7 +432,14 @@ public class EmployeeRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var businessUnitId = Guid.NewGuid();
-        var employee = new Employee(businessUnitId, "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+        var employee = new Employee(
+            businessUnitId,
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
         await _repository.AddAsync(employee);
 
         // Act - Active -> Vacation

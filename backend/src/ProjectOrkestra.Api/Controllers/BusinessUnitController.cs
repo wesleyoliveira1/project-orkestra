@@ -53,7 +53,10 @@ public class BusinessUnitController : ControllerBase
 
     /// <summary>Lists the business units of an organization.</summary>
     [HttpGet]
-    public async Task<IActionResult> ListByOrganization([FromQuery] Guid organizationId, [FromQuery] IEnumerable<BusinessUnitStatus>? statuses)
+    public async Task<IActionResult> ListByOrganization(
+        [FromQuery] Guid organizationId,
+        [FromQuery] IEnumerable<BusinessUnitStatus>? statuses
+    )
     {
         var businessUnits = await _listBusinessUnitsByOrganizationUseCase.ExecuteAsync(
             organizationId,

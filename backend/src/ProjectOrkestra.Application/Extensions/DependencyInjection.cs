@@ -8,8 +8,10 @@ using ProjectOrkestra.Application.UseCases.User;
 
 namespace ProjectOrkestra.Application.Extensions;
 
-public static class DependencyInjection {
-    public static IServiceCollection AddApplication(this IServiceCollection services) {
+public static class DependencyInjection
+{
+    public static IServiceCollection AddApplication(this IServiceCollection services)
+    {
         services.AddScoped<CreateTenantUseCase>();
         services.AddScoped<GetTenantUseCase>();
         services.AddScoped<ListTenantsUseCase>();
