@@ -5,15 +5,20 @@ using ProjectOrkestra.Domain.Exceptions;
 
 namespace ProjectOrkestra.UnitTests.Application.UseCases.Tenant;
 
-public class RenameTenantUseCaseTests {
+public class RenameTenantUseCaseTests
+{
     private const string ValidCnpj = "11.222.333/0001-81";
 
     [Fact]
-    public async Task ExecuteAsync_WhenTenantExists_RenamesAndPersists() {
+    public async Task ExecuteAsync_WhenTenantExists_RenamesAndPersists()
+    {
         ITenantRepository repository = Substitute.For<ITenantRepository>();
         RenameTenantUseCase useCase = new RenameTenantUseCase(repository);
 
-        ProjectOrkestra.Domain.Entities.Tenant tenant = new ProjectOrkestra.Domain.Entities.Tenant("Drogaria Araújo", ValidCnpj);
+        ProjectOrkestra.Domain.Entities.Tenant tenant = new ProjectOrkestra.Domain.Entities.Tenant(
+            "Drogaria Araújo",
+            ValidCnpj
+        );
         repository.GetByIdAsync(tenant.Id).Returns(tenant);
 
         await useCase.ExecuteAsync(tenant.Id, "Nova Razão Social");
@@ -23,13 +28,18 @@ public class RenameTenantUseCaseTests {
     }
 
     [Fact]
-    public async Task ExecuteAsync_WhenTenantDoesNotExist_ThrowsNotFoundException() {
+    public async Task ExecuteAsync_WhenTenantDoesNotExist_ThrowsNotFoundException()
+    {
         ITenantRepository repository = Substitute.For<ITenantRepository>();
         RenameTenantUseCase useCase = new RenameTenantUseCase(repository);
 
         Guid nonExistentId = Guid.NewGuid();
-        repository.GetByIdAsync(nonExistentId).Returns((ProjectOrkestra.Domain.Entities.Tenant?)null);
+        repository
+            .GetByIdAsync(nonExistentId)
+            .Returns((ProjectOrkestra.Domain.Entities.Tenant?)null);
 
-        await Assert.ThrowsAsync<NotFoundException>(() => useCase.ExecuteAsync(nonExistentId, "Novo Nome"));
+        await Assert.ThrowsAsync<NotFoundException>(() =>
+            useCase.ExecuteAsync(nonExistentId, "Novo Nome")
+        );
     }
 }

@@ -40,11 +40,14 @@ public class RenameOrganizationUseCaseTests
         RenameOrganizationUseCase useCase = new RenameOrganizationUseCase(repository);
 
         var nonExistentId = Guid.NewGuid();
-        repository.GetByIdAsync(nonExistentId).Returns((ProjectOrkestra.Domain.Entities.Organization?)null);
+        repository
+            .GetByIdAsync(nonExistentId)
+            .Returns((ProjectOrkestra.Domain.Entities.Organization?)null);
 
         // Act & Assert
         await Assert.ThrowsAsync<NotFoundException>(() =>
-            useCase.ExecuteAsync(nonExistentId, "Farmácia Nova"));
+            useCase.ExecuteAsync(nonExistentId, "Farmácia Nova")
+        );
     }
 
     [Fact]
@@ -66,9 +69,13 @@ public class RenameOrganizationUseCaseTests
         await useCase.ExecuteAsync(organization.Id, "Drogaria Araújo");
 
         // Assert
-        await repository.Received(1).UpdateAsync(Arg.Is<ProjectOrkestra.Domain.Entities.Organization>(org =>
-            org.Id == organization.Id && org.Name == "Drogaria Araújo"
-        ));
+        await repository
+            .Received(1)
+            .UpdateAsync(
+                Arg.Is<ProjectOrkestra.Domain.Entities.Organization>(org =>
+                    org.Id == organization.Id && org.Name == "Drogaria Araújo"
+                )
+            );
     }
 
     [Fact]
@@ -88,7 +95,8 @@ public class RenameOrganizationUseCaseTests
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentException>(() =>
-            useCase.ExecuteAsync(organization.Id, "A"));
+            useCase.ExecuteAsync(organization.Id, "A")
+        );
     }
 
     [Fact]
@@ -108,7 +116,8 @@ public class RenameOrganizationUseCaseTests
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentException>(() =>
-            useCase.ExecuteAsync(organization.Id, ""));
+            useCase.ExecuteAsync(organization.Id, "")
+        );
     }
 
     [Fact]

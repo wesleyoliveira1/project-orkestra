@@ -10,6 +10,9 @@ public interface IBusinessUnitRepository
 {
     Task AddAsync(BusinessUnit businessUnit);
     Task<BusinessUnit?> GetByIdAsync(Guid id);
-    Task<IEnumerable<BusinessUnit?>> GetAllByOrganizationIdAsync(Guid organizationId, IEnumerable<BusinessUnitStatus> statuses);
+    Task<IEnumerable<BusinessUnit?>> GetAllByOrganizationIdAsync(
+        Guid organizationId,
+        IEnumerable<BusinessUnitStatus> statuses
+    );
     Task UpdateAsync(BusinessUnit businessUnit);
 }

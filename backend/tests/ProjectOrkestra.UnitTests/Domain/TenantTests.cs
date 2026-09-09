@@ -3,15 +3,16 @@ using ProjectOrkestra.Domain.Enums;
 
 namespace ProjectOrkestra.UnitTests.Domain;
 
-public class TenantTests {
+public class TenantTests
+{
     private const string ValidCnpj = "11.222.333/0001-81";
     private const string ValidName = "Drogaria Araújo";
 
-    private static Tenant CreateValidTenant() =>
-        new(ValidName, ValidCnpj);
+    private static Tenant CreateValidTenant() => new(ValidName, ValidCnpj);
 
     [Fact]
-    public void Constructor_WithValidData_CreatesTenantAsActive() {
+    public void Constructor_WithValidData_CreatesTenantAsActive()
+    {
         Tenant tenant = CreateValidTenant();
 
         Assert.Equal(TenantStatus.Active, tenant.Status);
@@ -20,28 +21,29 @@ public class TenantTests {
     }
 
     [Fact]
-    public void Constructor_WithEmptyName_ThrowsArgumentException() {
-        Assert.Throws<ArgumentException>(() =>
-            new Tenant("", ValidCnpj));
+    public void Constructor_WithEmptyName_ThrowsArgumentException()
+    {
+        Assert.Throws<ArgumentException>(() => new Tenant("", ValidCnpj));
     }
 
     [Fact]
-    public void Constructor_WithSingleCharacterName_ThrowsArgumentException() {
-        Assert.Throws<ArgumentException>(() =>
-            new Tenant("A", ValidCnpj));
+    public void Constructor_WithSingleCharacterName_ThrowsArgumentException()
+    {
+        Assert.Throws<ArgumentException>(() => new Tenant("A", ValidCnpj));
     }
 
     [Theory]
     [InlineData("")]
     [InlineData("123")]
     [InlineData("00.000.000/0000-00")]
-    public void Constructor_WithInvalidCnpj_ThrowsArgumentException(string invalidCnpj) {
-        Assert.Throws<ArgumentException>(() =>
-            new Tenant(ValidName, invalidCnpj));
+    public void Constructor_WithInvalidCnpj_ThrowsArgumentException(string invalidCnpj)
+    {
+        Assert.Throws<ArgumentException>(() => new Tenant(ValidName, invalidCnpj));
     }
 
     [Fact]
-    public void Rename_WithValidName_UpdatesNameAndTimestamp() {
+    public void Rename_WithValidName_UpdatesNameAndTimestamp()
+    {
         Tenant tenant = CreateValidTenant();
 
         tenant.Rename("Drogaria Nova");
@@ -51,14 +53,16 @@ public class TenantTests {
     }
 
     [Fact]
-    public void Rename_WithEmptyName_ThrowsArgumentException() {
+    public void Rename_WithEmptyName_ThrowsArgumentException()
+    {
         Tenant tenant = CreateValidTenant();
 
         Assert.Throws<ArgumentException>(() => tenant.Rename(""));
     }
 
     [Fact]
-    public void Deactivate_SetsStatusToInactiveAndUpdatesTimestamp() {
+    public void Deactivate_SetsStatusToInactiveAndUpdatesTimestamp()
+    {
         Tenant tenant = CreateValidTenant();
 
         tenant.Deactivate();
@@ -68,7 +72,8 @@ public class TenantTests {
     }
 
     [Fact]
-    public void Activate_AfterDeactivate_SetsStatusToActive() {
+    public void Activate_AfterDeactivate_SetsStatusToActive()
+    {
         Tenant tenant = CreateValidTenant();
         tenant.Deactivate();
 

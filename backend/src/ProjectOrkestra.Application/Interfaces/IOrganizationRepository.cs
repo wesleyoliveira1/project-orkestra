@@ -10,6 +10,9 @@ public interface IOrganizationRepository
 {
     Task AddAsync(Organization organization);
     Task<Organization?> GetByIdAsync(Guid Id);
-    Task<IEnumerable<Organization>> GetAllByTenantIdAsync(Guid tenantid, IEnumerable<OrganizationStatus> statuses);
+    Task<IEnumerable<Organization>> GetAllByTenantIdAsync(
+        Guid tenantid,
+        IEnumerable<OrganizationStatus> statuses
+    );
     Task UpdateAsync(Organization organization);
 }

@@ -18,12 +18,14 @@ public class CreateBusinessUnitUseCaseTests
             OrganizationId = Guid.NewGuid(),
             Name = "Loja 1",
             Cnpj = "11.222.333/0001-81",
-            Address = "Rua das Flores, 123"
+            Address = "Rua das Flores, 123",
         };
 
         var id = await useCase.ExecuteAsync(dto);
 
         Assert.NotEqual(Guid.Empty, id);
-        await repository.Received(1).AddAsync(Arg.Any<ProjectOrkestra.Domain.Entities.BusinessUnit>());
+        await repository
+            .Received(1)
+            .AddAsync(Arg.Any<ProjectOrkestra.Domain.Entities.BusinessUnit>());
     }
 }

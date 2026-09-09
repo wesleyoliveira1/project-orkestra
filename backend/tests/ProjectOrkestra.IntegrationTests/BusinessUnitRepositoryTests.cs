@@ -21,7 +21,12 @@ public class BusinessUnitRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var organizationId = Guid.NewGuid();
-        var businessUnit = new BusinessUnit(organizationId, "Farmácia Centro", ValidCnpj, "Rua das Flores, 123");
+        var businessUnit = new BusinessUnit(
+            organizationId,
+            "Farmácia Centro",
+            ValidCnpj,
+            "Rua das Flores, 123"
+        );
 
         // Act
         await _repository.AddAsync(businessUnit);
@@ -41,15 +46,28 @@ public class BusinessUnitRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var organizationId = Guid.NewGuid();
-        var activeUnit = new BusinessUnit(organizationId, "Farmácia Centro Ativa", ValidCnpj, "Rua das Flores, 123");
-        var inactiveUnit = new BusinessUnit(organizationId, "Farmácia Centro Inativa", "22.333.444/0001-82", "Avenida Paulista, 1000");
+        var activeUnit = new BusinessUnit(
+            organizationId,
+            "Farmácia Centro Ativa",
+            ValidCnpj,
+            "Rua das Flores, 123"
+        );
+        var inactiveUnit = new BusinessUnit(
+            organizationId,
+            "Farmácia Centro Inativa",
+            "22.333.444/0001-82",
+            "Avenida Paulista, 1000"
+        );
         inactiveUnit.Deactivate();
 
         await _repository.AddAsync(activeUnit);
         await _repository.AddAsync(inactiveUnit);
 
         // Act
-        var result = await _repository.GetAllByOrganizationIdAsync(organizationId, new[] { BusinessUnitStatus.Active });
+        var result = await _repository.GetAllByOrganizationIdAsync(
+            organizationId,
+            new[] { BusinessUnitStatus.Active }
+        );
 
         // Assert
         Assert.Single(result);
@@ -62,15 +80,28 @@ public class BusinessUnitRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var organizationId = Guid.NewGuid();
-        var activeUnit = new BusinessUnit(organizationId, "Farmácia Centro Ativa", ValidCnpj, "Rua das Flores, 123");
-        var inactiveUnit = new BusinessUnit(organizationId, "Farmácia Centro Inativa", "22.333.444/0001-82", "Avenida Paulista, 1000");
+        var activeUnit = new BusinessUnit(
+            organizationId,
+            "Farmácia Centro Ativa",
+            ValidCnpj,
+            "Rua das Flores, 123"
+        );
+        var inactiveUnit = new BusinessUnit(
+            organizationId,
+            "Farmácia Centro Inativa",
+            "22.333.444/0001-82",
+            "Avenida Paulista, 1000"
+        );
         inactiveUnit.Deactivate();
 
         await _repository.AddAsync(activeUnit);
         await _repository.AddAsync(inactiveUnit);
 
         // Act
-        var result = await _repository.GetAllByOrganizationIdAsync(organizationId, new[] { BusinessUnitStatus.Inactive });
+        var result = await _repository.GetAllByOrganizationIdAsync(
+            organizationId,
+            new[] { BusinessUnitStatus.Inactive }
+        );
 
         // Assert
         Assert.Single(result);
@@ -83,16 +114,28 @@ public class BusinessUnitRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var organizationId = Guid.NewGuid();
-        var activeUnit = new BusinessUnit(organizationId, "Farmácia Centro Ativa", ValidCnpj, "Rua das Flores, 123");
-        var inactiveUnit = new BusinessUnit(organizationId, "Farmácia Centro Inativa", "22.333.444/0001-82", "Avenida Paulista, 1000");
+        var activeUnit = new BusinessUnit(
+            organizationId,
+            "Farmácia Centro Ativa",
+            ValidCnpj,
+            "Rua das Flores, 123"
+        );
+        var inactiveUnit = new BusinessUnit(
+            organizationId,
+            "Farmácia Centro Inativa",
+            "22.333.444/0001-82",
+            "Avenida Paulista, 1000"
+        );
         inactiveUnit.Deactivate();
 
         await _repository.AddAsync(activeUnit);
         await _repository.AddAsync(inactiveUnit);
 
         // Act
-        var result = await _repository.GetAllByOrganizationIdAsync(organizationId,
-            new[] { BusinessUnitStatus.Active, BusinessUnitStatus.Inactive });
+        var result = await _repository.GetAllByOrganizationIdAsync(
+            organizationId,
+            new[] { BusinessUnitStatus.Active, BusinessUnitStatus.Inactive }
+        );
 
         // Assert
         Assert.Equal(2, result.Count());
@@ -104,12 +147,20 @@ public class BusinessUnitRepositoryTests : IClassFixture<MongoDbTestFixture>
         // Arrange
         var organizationId1 = Guid.NewGuid();
         var organizationId2 = Guid.NewGuid();
-        var businessUnit = new BusinessUnit(organizationId1, "Farmácia Centro", ValidCnpj, "Rua das Flores, 123");
+        var businessUnit = new BusinessUnit(
+            organizationId1,
+            "Farmácia Centro",
+            ValidCnpj,
+            "Rua das Flores, 123"
+        );
 
         await _repository.AddAsync(businessUnit);
 
         // Act
-        var result = await _repository.GetAllByOrganizationIdAsync(organizationId2, new[] { BusinessUnitStatus.Active });
+        var result = await _repository.GetAllByOrganizationIdAsync(
+            organizationId2,
+            new[] { BusinessUnitStatus.Active }
+        );
 
         // Assert
         Assert.Empty(result);
@@ -120,7 +171,12 @@ public class BusinessUnitRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var organizationId = Guid.NewGuid();
-        var businessUnit = new BusinessUnit(organizationId, "Farmácia Centro", ValidCnpj, "Rua das Flores, 123");
+        var businessUnit = new BusinessUnit(
+            organizationId,
+            "Farmácia Centro",
+            ValidCnpj,
+            "Rua das Flores, 123"
+        );
         await _repository.AddAsync(businessUnit);
 
         // Act
@@ -139,7 +195,12 @@ public class BusinessUnitRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var organizationId = Guid.NewGuid();
-        var businessUnit = new BusinessUnit(organizationId, "Farmácia Centro", ValidCnpj, "Rua das Flores, 123");
+        var businessUnit = new BusinessUnit(
+            organizationId,
+            "Farmácia Centro",
+            ValidCnpj,
+            "Rua das Flores, 123"
+        );
         await _repository.AddAsync(businessUnit);
 
         // Act
@@ -158,7 +219,12 @@ public class BusinessUnitRepositoryTests : IClassFixture<MongoDbTestFixture>
     {
         // Arrange
         var organizationId = Guid.NewGuid();
-        var businessUnit = new BusinessUnit(organizationId, "Farmácia Centro", ValidCnpj, "Rua das Flores, 123");
+        var businessUnit = new BusinessUnit(
+            organizationId,
+            "Farmácia Centro",
+            ValidCnpj,
+            "Rua das Flores, 123"
+        );
         await _repository.AddAsync(businessUnit);
         var originalCreatedAt = businessUnit.CreatedAt;
 

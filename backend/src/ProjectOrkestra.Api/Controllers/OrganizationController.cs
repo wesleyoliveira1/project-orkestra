@@ -50,9 +50,15 @@ public class OrganizationController : ControllerBase
 
     /// <summary>Lists the organizations of a tenant.</summary>
     [HttpGet]
-    public async Task<IActionResult> ListByTenant([FromQuery] Guid tenantId, [FromQuery] IEnumerable<OrganizationStatus>? statuses)
+    public async Task<IActionResult> ListByTenant(
+        [FromQuery] Guid tenantId,
+        [FromQuery] IEnumerable<OrganizationStatus>? statuses
+    )
     {
-        var organizations = await _listOrganizationsByTenantUseCase.ExecuteAsync(tenantId, statuses);
+        var organizations = await _listOrganizationsByTenantUseCase.ExecuteAsync(
+            tenantId,
+            statuses
+        );
 
         return Ok(organizations);
     }

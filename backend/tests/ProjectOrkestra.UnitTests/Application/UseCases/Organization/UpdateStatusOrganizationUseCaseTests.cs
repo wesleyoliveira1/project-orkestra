@@ -65,11 +65,14 @@ public class UpdateStatusOrganizationUseCaseTests
         UpdateStatusOrganizationUseCase useCase = new UpdateStatusOrganizationUseCase(repository);
 
         var nonExistentId = Guid.NewGuid();
-        repository.GetByIdAsync(nonExistentId).Returns((ProjectOrkestra.Domain.Entities.Organization?)null);
+        repository
+            .GetByIdAsync(nonExistentId)
+            .Returns((ProjectOrkestra.Domain.Entities.Organization?)null);
 
         // Act & Assert
         await Assert.ThrowsAsync<NotFoundException>(() =>
-            useCase.ExecuteAsync(nonExistentId, OrganizationStatus.Active));
+            useCase.ExecuteAsync(nonExistentId, OrganizationStatus.Active)
+        );
     }
 
     [Fact]
@@ -137,9 +140,13 @@ public class UpdateStatusOrganizationUseCaseTests
         await useCase.ExecuteAsync(organization.Id, OrganizationStatus.Active);
 
         // Assert
-        await repository.Received(1).UpdateAsync(Arg.Is<ProjectOrkestra.Domain.Entities.Organization>(org =>
-            org.Id == organization.Id && org.Status == OrganizationStatus.Active
-        ));
+        await repository
+            .Received(1)
+            .UpdateAsync(
+                Arg.Is<ProjectOrkestra.Domain.Entities.Organization>(org =>
+                    org.Id == organization.Id && org.Status == OrganizationStatus.Active
+                )
+            );
     }
 
     [Fact]
@@ -161,8 +168,12 @@ public class UpdateStatusOrganizationUseCaseTests
         await useCase.ExecuteAsync(organization.Id, OrganizationStatus.Inactive);
 
         // Assert
-        await repository.Received(1).UpdateAsync(Arg.Is<ProjectOrkestra.Domain.Entities.Organization>(org =>
-            org.Id == organization.Id && org.Status == OrganizationStatus.Inactive
-        ));
+        await repository
+            .Received(1)
+            .UpdateAsync(
+                Arg.Is<ProjectOrkestra.Domain.Entities.Organization>(org =>
+                    org.Id == organization.Id && org.Status == OrganizationStatus.Inactive
+                )
+            );
     }
 }

@@ -21,7 +21,7 @@ public class CreateOrganizationUseCaseTests
         {
             TenantId = tenantId,
             Name = "Farmácia Central",
-            Cnpj = ValidCnpj
+            Cnpj = ValidCnpj,
         };
 
         // Act
@@ -29,7 +29,9 @@ public class CreateOrganizationUseCaseTests
 
         // Assert
         Assert.NotEqual(Guid.Empty, id);
-        await repository.Received(1).AddAsync(Arg.Any<ProjectOrkestra.Domain.Entities.Organization>());
+        await repository
+            .Received(1)
+            .AddAsync(Arg.Any<ProjectOrkestra.Domain.Entities.Organization>());
     }
 
     [Fact]
@@ -44,18 +46,22 @@ public class CreateOrganizationUseCaseTests
         {
             TenantId = tenantId,
             Name = "Farmácia Central",
-            Cnpj = ValidCnpj
+            Cnpj = ValidCnpj,
         };
 
         // Act
         await useCase.ExecuteAsync(dto);
 
         // Assert
-        await repository.Received(1).AddAsync(Arg.Is<ProjectOrkestra.Domain.Entities.Organization>(org =>
-            org.TenantId == tenantId &&
-            org.Name == "Farmácia Central" &&
-            org.Cnpj == ValidCnpj
-        ));
+        await repository
+            .Received(1)
+            .AddAsync(
+                Arg.Is<ProjectOrkestra.Domain.Entities.Organization>(org =>
+                    org.TenantId == tenantId
+                    && org.Name == "Farmácia Central"
+                    && org.Cnpj == ValidCnpj
+                )
+            );
     }
 
     [Fact]
@@ -72,14 +78,14 @@ public class CreateOrganizationUseCaseTests
         {
             TenantId = tenantId1,
             Name = "Farmácia Central",
-            Cnpj = "11.222.333/0001-81"
+            Cnpj = "11.222.333/0001-81",
         };
 
         var dto2 = new CreateOrganizationDto
         {
             TenantId = tenantId2,
             Name = "Drogaria Araújo",
-            Cnpj = "22.333.444/0001-82"
+            Cnpj = "22.333.444/0001-82",
         };
 
         // Act

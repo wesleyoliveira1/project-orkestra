@@ -49,7 +49,10 @@ public class Employee
         if (string.IsNullOrWhiteSpace(address))
             throw new ArgumentException($"Address is required.", nameof(address));
         if (address.Count(c => !char.IsWhiteSpace(c)) < 2)
-            throw new ArgumentException($"Address must have at least two characters.", nameof(address));
+            throw new ArgumentException(
+                $"Address must have at least two characters.",
+                nameof(address)
+            );
 
         Id = Guid.NewGuid();
         BusinessUnitId = businessUnitId;
@@ -97,7 +100,10 @@ public class Employee
         if (string.IsNullOrWhiteSpace(newName))
             throw new ArgumentException("Name is required.", nameof(newName));
         if (newName.Count(c => !char.IsWhiteSpace(c)) < 2)
-            throw new ArgumentException($"Name must have at least two characters.", nameof(newName));
+            throw new ArgumentException(
+                $"Name must have at least two characters.",
+                nameof(newName)
+            );
 
         Name = newName;
         UpdatedAt = DateTime.UtcNow;
@@ -141,7 +147,10 @@ public class Employee
         if (string.IsNullOrWhiteSpace(newAddress))
             throw new ArgumentNullException("Address is required.", nameof(newAddress));
         if (newAddress.Count(c => !char.IsWhiteSpace(c)) < 2)
-            throw new ArgumentException($"Address must have at least two characters.", nameof(newAddress));
+            throw new ArgumentException(
+                $"Address must have at least two characters.",
+                nameof(newAddress)
+            );
 
         Address = newAddress;
         UpdatedAt = DateTime.UtcNow;

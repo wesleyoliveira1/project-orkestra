@@ -3,7 +3,8 @@ using ProjectOrkestra.Domain.Validators;
 
 namespace ProjectOrkestra.Domain.Entities;
 
-public class BusinessUnit {
+public class BusinessUnit
+{
     public Guid Id { get; private set; }
     public Guid OrganizationId { get; private set; }
     public string Name { get; private set; } = string.Empty;
@@ -15,18 +16,19 @@ public class BusinessUnit {
 
     private BusinessUnit() { }
 
-    public BusinessUnit(Guid organizationId, string name, string cnpj, string address) {
-        if(organizationId == Guid.Empty)
+    public BusinessUnit(Guid organizationId, string name, string cnpj, string address)
+    {
+        if (organizationId == Guid.Empty)
             throw new ArgumentException("OrganizationId is required.", nameof(organizationId));
-        if(string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name is required.", nameof(name));
-        if(name.Count(c => !char.IsWhiteSpace(c)) < 2)
+        if (name.Count(c => !char.IsWhiteSpace(c)) < 2)
             throw new ArgumentException($"Name must have at least two characters.", nameof(name));
-        if(string.IsNullOrWhiteSpace(cnpj))
+        if (string.IsNullOrWhiteSpace(cnpj))
             throw new ArgumentException("Cnpj is required.", nameof(cnpj));
-        if(!BrazilianDocumentValidator.IsValidCnpj(cnpj))
+        if (!BrazilianDocumentValidator.IsValidCnpj(cnpj))
             throw new ArgumentException("Invalid CNPJ.", nameof(cnpj));
-        if(string.IsNullOrWhiteSpace(address))
+        if (string.IsNullOrWhiteSpace(address))
             throw new ArgumentException("Address is required.", nameof(address));
 
         Id = Guid.NewGuid();
@@ -38,20 +40,23 @@ public class BusinessUnit {
         CreatedAt = DateTime.UtcNow;
     }
 
-    public void Deactivate() {
+    public void Deactivate()
+    {
         Status = BusinessUnitStatus.Inactive;
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void Activate() {
+    public void Activate()
+    {
         Status = BusinessUnitStatus.Active;
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void ChangeAddress(string newAddress) {
-        if(string.IsNullOrWhiteSpace(newAddress))
+    public void ChangeAddress(string newAddress)
+    {
+        if (string.IsNullOrWhiteSpace(newAddress))
             throw new ArgumentException("Address is required.", nameof(newAddress));
-        if(newAddress.Count(c => !char.IsWhiteSpace(c)) < 2)
+        if (newAddress.Count(c => !char.IsWhiteSpace(c)) < 2)
             throw new ArgumentException(
                 $"Address must have at least two characters.",
                 nameof(newAddress)
@@ -61,10 +66,11 @@ public class BusinessUnit {
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void Rename(string newName) {
-        if(string.IsNullOrWhiteSpace(newName))
+    public void Rename(string newName)
+    {
+        if (string.IsNullOrWhiteSpace(newName))
             throw new ArgumentException("Name is required.", nameof(newName));
-        if(newName.Count(c => !char.IsWhiteSpace(c)) < 2)
+        if (newName.Count(c => !char.IsWhiteSpace(c)) < 2)
             throw new ArgumentException(
                 $"Name must have at least two characters.",
                 nameof(newName)

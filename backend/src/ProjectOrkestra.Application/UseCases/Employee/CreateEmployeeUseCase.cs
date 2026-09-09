@@ -3,14 +3,17 @@ using ProjectOrkestra.Application.Interfaces;
 
 namespace ProjectOrkestra.Application.UseCases.Employee;
 
-public class CreateEmployeeUseCase {
+public class CreateEmployeeUseCase
+{
     private readonly IEmployeeRepository _repository;
 
-    public CreateEmployeeUseCase(IEmployeeRepository repository) {
+    public CreateEmployeeUseCase(IEmployeeRepository repository)
+    {
         _repository = repository;
     }
 
-    public async Task<Guid> ExecuteAsync(CreateEmployeeDto dto) {
+    public async Task<Guid> ExecuteAsync(CreateEmployeeDto dto)
+    {
         Domain.Entities.Employee employee = new Domain.Entities.Employee(
             dto.BusinessUnitId,
             dto.Name,

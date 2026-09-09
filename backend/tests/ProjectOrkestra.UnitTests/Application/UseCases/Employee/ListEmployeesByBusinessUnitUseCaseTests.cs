@@ -17,16 +17,26 @@ public class ListEmployeesByBusinessUnitUseCaseTests
     {
         // Arrange
         IEmployeeRepository repository = Substitute.For<IEmployeeRepository>();
-        ListEmployeesByBusinessUnitUseCase useCase = new ListEmployeesByBusinessUnitUseCase(repository);
+        ListEmployeesByBusinessUnitUseCase useCase = new ListEmployeesByBusinessUnitUseCase(
+            repository
+        );
 
         var businessUnitId = Guid.NewGuid();
         var employees = new List<ProjectOrkestra.Domain.Entities.Employee?>
         {
             new(Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress),
-            new(Guid.NewGuid(), "Maria Santos", "222.555.888-46", "maria@email.com", "(11) 98888-8888", "Avenida Paulista, 1000")
+            new(
+                Guid.NewGuid(),
+                "Maria Santos",
+                "222.555.888-46",
+                "maria@email.com",
+                "(11) 98888-8888",
+                "Avenida Paulista, 1000"
+            ),
         };
 
-        repository.GetAllByBusinessUnitIdAsync(businessUnitId, Arg.Any<IEnumerable<EmployeeStatus>>())
+        repository
+            .GetAllByBusinessUnitIdAsync(businessUnitId, Arg.Any<IEnumerable<EmployeeStatus>>())
             .Returns(employees);
 
         // Act
@@ -41,10 +51,13 @@ public class ListEmployeesByBusinessUnitUseCaseTests
     {
         // Arrange
         IEmployeeRepository repository = Substitute.For<IEmployeeRepository>();
-        ListEmployeesByBusinessUnitUseCase useCase = new ListEmployeesByBusinessUnitUseCase(repository);
+        ListEmployeesByBusinessUnitUseCase useCase = new ListEmployeesByBusinessUnitUseCase(
+            repository
+        );
 
         var businessUnitId = Guid.NewGuid();
-        repository.GetAllByBusinessUnitIdAsync(businessUnitId, Arg.Any<IEnumerable<EmployeeStatus>>())
+        repository
+            .GetAllByBusinessUnitIdAsync(businessUnitId, Arg.Any<IEnumerable<EmployeeStatus>>())
             .Returns(new List<ProjectOrkestra.Domain.Entities.Employee?>());
 
         // Act
@@ -59,27 +72,32 @@ public class ListEmployeesByBusinessUnitUseCaseTests
     {
         // Arrange
         IEmployeeRepository repository = Substitute.For<IEmployeeRepository>();
-        ListEmployeesByBusinessUnitUseCase useCase = new ListEmployeesByBusinessUnitUseCase(repository);
+        ListEmployeesByBusinessUnitUseCase useCase = new ListEmployeesByBusinessUnitUseCase(
+            repository
+        );
 
         var businessUnitId = Guid.NewGuid();
         var activeEmployees = new List<ProjectOrkestra.Domain.Entities.Employee?>
         {
-            new(Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress)
+            new(Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress),
         };
 
-        repository.GetAllByBusinessUnitIdAsync(businessUnitId, Arg.Any<IEnumerable<EmployeeStatus>>())
+        repository
+            .GetAllByBusinessUnitIdAsync(businessUnitId, Arg.Any<IEnumerable<EmployeeStatus>>())
             .Returns(activeEmployees);
 
         // Act
         var result = await useCase.ExecuteAsync(businessUnitId);
 
         // Assert
-        await repository.Received(1).GetAllByBusinessUnitIdAsync(
-            businessUnitId,
-            Arg.Is<IEnumerable<EmployeeStatus>>(statuses =>
-                statuses.Count() == 1 && statuses.Contains(EmployeeStatus.Active)
-            )
-        );
+        await repository
+            .Received(1)
+            .GetAllByBusinessUnitIdAsync(
+                businessUnitId,
+                Arg.Is<IEnumerable<EmployeeStatus>>(statuses =>
+                    statuses.Count() == 1 && statuses.Contains(EmployeeStatus.Active)
+                )
+            );
     }
 
     [Fact]
@@ -87,17 +105,26 @@ public class ListEmployeesByBusinessUnitUseCaseTests
     {
         // Arrange
         IEmployeeRepository repository = Substitute.For<IEmployeeRepository>();
-        ListEmployeesByBusinessUnitUseCase useCase = new ListEmployeesByBusinessUnitUseCase(repository);
+        ListEmployeesByBusinessUnitUseCase useCase = new ListEmployeesByBusinessUnitUseCase(
+            repository
+        );
 
         var businessUnitId = Guid.NewGuid();
         var employee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+            Guid.NewGuid(),
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
         employee.Vacation();
 
         var vacationEmployees = new List<ProjectOrkestra.Domain.Entities.Employee?> { employee };
         var statusFilter = new[] { EmployeeStatus.Vacation };
 
-        repository.GetAllByBusinessUnitIdAsync(businessUnitId, statusFilter)
+        repository
+            .GetAllByBusinessUnitIdAsync(businessUnitId, statusFilter)
             .Returns(vacationEmployees);
 
         // Act
@@ -105,8 +132,10 @@ public class ListEmployeesByBusinessUnitUseCaseTests
 
         // Assert
         Assert.Single(result);
-        Assert.All(result.OfType<ProjectOrkestra.Domain.Entities.Employee>(), emp =>
-            Assert.Equal(EmployeeStatus.Vacation, emp.Status));
+        Assert.All(
+            result.OfType<ProjectOrkestra.Domain.Entities.Employee>(),
+            emp => Assert.Equal(EmployeeStatus.Vacation, emp.Status)
+        );
     }
 
     [Fact]
@@ -114,20 +143,37 @@ public class ListEmployeesByBusinessUnitUseCaseTests
     {
         // Arrange
         IEmployeeRepository repository = Substitute.For<IEmployeeRepository>();
-        ListEmployeesByBusinessUnitUseCase useCase = new ListEmployeesByBusinessUnitUseCase(repository);
+        ListEmployeesByBusinessUnitUseCase useCase = new ListEmployeesByBusinessUnitUseCase(
+            repository
+        );
 
         var businessUnitId = Guid.NewGuid();
         var activeEmployee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+            Guid.NewGuid(),
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
         var vacationEmployee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "Maria Santos", "222.555.888-46", "maria@email.com", "(11) 98888-8888", "Avenida Paulista, 1000");
+            Guid.NewGuid(),
+            "Maria Santos",
+            "222.555.888-46",
+            "maria@email.com",
+            "(11) 98888-8888",
+            "Avenida Paulista, 1000"
+        );
         vacationEmployee.Vacation();
 
-        var employees = new List<ProjectOrkestra.Domain.Entities.Employee?> { activeEmployee, vacationEmployee };
+        var employees = new List<ProjectOrkestra.Domain.Entities.Employee?>
+        {
+            activeEmployee,
+            vacationEmployee,
+        };
         var statusFilter = new[] { EmployeeStatus.Active, EmployeeStatus.Vacation };
 
-        repository.GetAllByBusinessUnitIdAsync(businessUnitId, statusFilter)
-            .Returns(employees);
+        repository.GetAllByBusinessUnitIdAsync(businessUnitId, statusFilter).Returns(employees);
 
         // Act
         var result = await useCase.ExecuteAsync(businessUnitId, statusFilter);

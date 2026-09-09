@@ -20,10 +20,11 @@ public class ListOrganizationsByTenantUseCaseTests
         var organizations = new List<ProjectOrkestra.Domain.Entities.Organization>
         {
             new(tenantId, "Farmácia Central", ValidCnpj),
-            new(tenantId, "Drogaria Araújo", "22.333.444/0001-82")
+            new(tenantId, "Drogaria Araújo", "22.333.444/0001-82"),
         };
 
-        repository.GetAllByTenantIdAsync(tenantId, Arg.Any<IEnumerable<OrganizationStatus>>())
+        repository
+            .GetAllByTenantIdAsync(tenantId, Arg.Any<IEnumerable<OrganizationStatus>>())
             .Returns(organizations);
 
         // Act
@@ -42,7 +43,8 @@ public class ListOrganizationsByTenantUseCaseTests
         ListOrganizationsByTenantUseCase useCase = new ListOrganizationsByTenantUseCase(repository);
 
         var tenantId = Guid.NewGuid();
-        repository.GetAllByTenantIdAsync(tenantId, Arg.Any<IEnumerable<OrganizationStatus>>())
+        repository
+            .GetAllByTenantIdAsync(tenantId, Arg.Any<IEnumerable<OrganizationStatus>>())
             .Returns(new List<ProjectOrkestra.Domain.Entities.Organization>());
 
         // Act
@@ -62,22 +64,25 @@ public class ListOrganizationsByTenantUseCaseTests
         var tenantId = Guid.NewGuid();
         var activeOrganizations = new List<ProjectOrkestra.Domain.Entities.Organization>
         {
-            new(tenantId, "Farmácia Central", ValidCnpj)
+            new(tenantId, "Farmácia Central", ValidCnpj),
         };
 
-        repository.GetAllByTenantIdAsync(tenantId, Arg.Any<IEnumerable<OrganizationStatus>>())
+        repository
+            .GetAllByTenantIdAsync(tenantId, Arg.Any<IEnumerable<OrganizationStatus>>())
             .Returns(activeOrganizations);
 
         // Act
         var result = await useCase.ExecuteAsync(tenantId);
 
         // Assert
-        await repository.Received(1).GetAllByTenantIdAsync(
-            tenantId,
-            Arg.Is<IEnumerable<OrganizationStatus>>(statuses =>
-                statuses.Count() == 1 && statuses.Contains(OrganizationStatus.Active)
-            )
-        );
+        await repository
+            .Received(1)
+            .GetAllByTenantIdAsync(
+                tenantId,
+                Arg.Is<IEnumerable<OrganizationStatus>>(statuses =>
+                    statuses.Count() == 1 && statuses.Contains(OrganizationStatus.Active)
+                )
+            );
     }
 
     [Fact]
@@ -88,14 +93,20 @@ public class ListOrganizationsByTenantUseCaseTests
         ListOrganizationsByTenantUseCase useCase = new ListOrganizationsByTenantUseCase(repository);
 
         var tenantId = Guid.NewGuid();
-        var organization = new ProjectOrkestra.Domain.Entities.Organization(tenantId, "Farmácia Central", ValidCnpj);
+        var organization = new ProjectOrkestra.Domain.Entities.Organization(
+            tenantId,
+            "Farmácia Central",
+            ValidCnpj
+        );
         organization.Deactivate();
 
-        var inactiveOrganizations = new List<ProjectOrkestra.Domain.Entities.Organization> { organization };
+        var inactiveOrganizations = new List<ProjectOrkestra.Domain.Entities.Organization>
+        {
+            organization,
+        };
         var statusFilter = new[] { OrganizationStatus.Inactive };
 
-        repository.GetAllByTenantIdAsync(tenantId, statusFilter)
-            .Returns(inactiveOrganizations);
+        repository.GetAllByTenantIdAsync(tenantId, statusFilter).Returns(inactiveOrganizations);
 
         // Act
         var result = await useCase.ExecuteAsync(tenantId, statusFilter);
@@ -113,19 +124,26 @@ public class ListOrganizationsByTenantUseCaseTests
         ListOrganizationsByTenantUseCase useCase = new ListOrganizationsByTenantUseCase(repository);
 
         var tenantId = Guid.NewGuid();
-        var activeOrganization = new ProjectOrkestra.Domain.Entities.Organization(tenantId, "Farmácia Central", ValidCnpj);
-        var inactiveOrganization = new ProjectOrkestra.Domain.Entities.Organization(tenantId, "Drogaria Araújo", "22.333.444/0001-82");
+        var activeOrganization = new ProjectOrkestra.Domain.Entities.Organization(
+            tenantId,
+            "Farmácia Central",
+            ValidCnpj
+        );
+        var inactiveOrganization = new ProjectOrkestra.Domain.Entities.Organization(
+            tenantId,
+            "Drogaria Araújo",
+            "22.333.444/0001-82"
+        );
         inactiveOrganization.Deactivate();
 
         var organizations = new List<ProjectOrkestra.Domain.Entities.Organization>
         {
             activeOrganization,
-            inactiveOrganization
+            inactiveOrganization,
         };
 
         var statusFilter = new[] { OrganizationStatus.Active, OrganizationStatus.Inactive };
-        repository.GetAllByTenantIdAsync(tenantId, statusFilter)
-            .Returns(organizations);
+        repository.GetAllByTenantIdAsync(tenantId, statusFilter).Returns(organizations);
 
         // Act
         var result = await useCase.ExecuteAsync(tenantId, statusFilter);

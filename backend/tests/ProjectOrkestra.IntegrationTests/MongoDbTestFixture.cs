@@ -6,7 +6,8 @@ using ProjectOrkestra.Infrastructure.Mappings;
 
 namespace ProjectOrkestra.IntegrationTests;
 
-public class MongoDbTestFixture {
+public class MongoDbTestFixture
+{
     public IMongoDbContext Context { get; }
     private static MongoDbSettings? _sharedSettings;
     private static readonly object _configLock = new object();
@@ -38,7 +39,9 @@ public class MongoDbTestFixture {
                     .AddJsonFile("appsettings.test.json")
                     .Build();
 
-                _sharedSettings = configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>()!;
+                _sharedSettings = configuration
+                    .GetSection("MongoDbSettings")
+                    .Get<MongoDbSettings>()!;
             }
         }
 

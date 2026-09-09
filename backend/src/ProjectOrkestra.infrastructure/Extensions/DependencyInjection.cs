@@ -8,11 +8,13 @@ using ProjectOrkestra.Infrastructure.Repositories;
 
 namespace ProjectOrkestra.Infrastructure.Extensions;
 
-public static class DependencyInjection {
+public static class DependencyInjection
+{
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration
-    ) {
+    )
+    {
         MongoSerializationConfig.Configure();
 
         TenantMap.Configure();

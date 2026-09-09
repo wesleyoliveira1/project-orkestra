@@ -20,7 +20,13 @@ public class ChangeEmployeePhoneUseCaseTests
         ChangeEmployeePhoneUseCase useCase = new ChangeEmployeePhoneUseCase(repository);
 
         var employee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+            Guid.NewGuid(),
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
 
         repository.GetByIdAsync(employee.Id).Returns(employee);
 
@@ -40,11 +46,14 @@ public class ChangeEmployeePhoneUseCaseTests
         ChangeEmployeePhoneUseCase useCase = new ChangeEmployeePhoneUseCase(repository);
 
         var nonExistentId = Guid.NewGuid();
-        repository.GetByIdAsync(nonExistentId).Returns((ProjectOrkestra.Domain.Entities.Employee?)null);
+        repository
+            .GetByIdAsync(nonExistentId)
+            .Returns((ProjectOrkestra.Domain.Entities.Employee?)null);
 
         // Act & Assert
         await Assert.ThrowsAsync<NotFoundException>(() =>
-            useCase.ExecuteAsync(nonExistentId, "(11) 98888-8888"));
+            useCase.ExecuteAsync(nonExistentId, "(11) 98888-8888")
+        );
     }
 
     [Fact]
@@ -55,7 +64,13 @@ public class ChangeEmployeePhoneUseCaseTests
         ChangeEmployeePhoneUseCase useCase = new ChangeEmployeePhoneUseCase(repository);
 
         var employee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+            Guid.NewGuid(),
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
 
         repository.GetByIdAsync(employee.Id).Returns(employee);
 
@@ -65,9 +80,13 @@ public class ChangeEmployeePhoneUseCaseTests
         await useCase.ExecuteAsync(employee.Id, newPhone);
 
         // Assert
-        await repository.Received(1).UpdateAsync(Arg.Is<ProjectOrkestra.Domain.Entities.Employee>(emp =>
-            emp.Id == employee.Id && emp.Phone == newPhone
-        ));
+        await repository
+            .Received(1)
+            .UpdateAsync(
+                Arg.Is<ProjectOrkestra.Domain.Entities.Employee>(emp =>
+                    emp.Id == employee.Id && emp.Phone == newPhone
+                )
+            );
     }
 
     [Fact]
@@ -78,7 +97,13 @@ public class ChangeEmployeePhoneUseCaseTests
         ChangeEmployeePhoneUseCase useCase = new ChangeEmployeePhoneUseCase(repository);
 
         var employee = new ProjectOrkestra.Domain.Entities.Employee(
-            Guid.NewGuid(), "João Silva", ValidCpf, ValidEmail, ValidPhone, ValidAddress);
+            Guid.NewGuid(),
+            "João Silva",
+            ValidCpf,
+            ValidEmail,
+            ValidPhone,
+            ValidAddress
+        );
 
         repository.GetByIdAsync(employee.Id).Returns(employee);
 
