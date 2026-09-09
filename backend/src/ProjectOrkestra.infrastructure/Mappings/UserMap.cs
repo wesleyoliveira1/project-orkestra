@@ -4,12 +4,12 @@ using ProjectOrkestra.Domain.Entities;
 
 namespace ProjectOrkestra.Infrastructure.Mappings;
 
-public static class OrganizationMap {
+public static class UserMap {
     public static void Configure() {
-        if(BsonClassMap.IsClassMapRegistered(typeof(Organization)))
+        if(BsonClassMap.IsClassMapRegistered(typeof(User)))
             return;
 
-        BsonClassMap.RegisterClassMap<Organization>(map => {
+        BsonClassMap.RegisterClassMap<User>(map => {
             map.AutoMap();
 
             map.MapIdMember(x => x.Id).SetIdGenerator(CombGuidGenerator.Instance);
