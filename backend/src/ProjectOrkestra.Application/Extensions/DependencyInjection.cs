@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using ProjectOrkestra.Application.UseCases.Authentication;
 using ProjectOrkestra.Application.UseCases.BusinessUnit;
 using ProjectOrkestra.Application.UseCases.Employee;
 using ProjectOrkestra.Application.UseCases.Organization;
@@ -43,6 +44,8 @@ public static class DependencyInjection {
         services.AddScoped<CreateUserUseCase>();
         services.AddScoped<GetUserUseCase>();
         services.AddScoped<ListUsersByTenantUseCase>();
+
+        services.AddScoped<LoginUseCase>();
 
         return services;
     }
